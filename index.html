@@ -541,3 +541,22 @@ function exportPDF() {
 // --- Persistence ---
 function saveWorkspace() {
     localStorage.setItem('auraResumeV2', document.getElementById('cv-document').innerHTML);
+    alert("Workspace Saved Successfully!");
+}
+
+function resetWorkspace() {
+    if(confirm("Are you sure? This will reset your resume back to the original template.")){
+        localStorage.removeItem('auraResumeV2');
+        location.reload();
+    }
+}
+
+window.onload = () => {
+    const saved = localStorage.getItem('auraResumeV2');
+    if (saved) { document.getElementById('cv-document').innerHTML = saved; }
+    updateTheme();
+};
+</script>
+
+</body>
+</html>
