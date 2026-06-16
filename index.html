@@ -3,34 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aura CV - Premium Resume Workspace</title>
+<title>Aura CV - Premium Workspace</title>
 
-<!-- Modern Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-<!-- FontAwesome -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<!-- PDF Export Engine -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 /* =========================================
-   Application Variables & Theme
+   Application Theme & Variables
    ========================================= */
 :root {
-    --app-bg: #f3f4f6;
+    --app-bg: #f8fafc;
     --toolbar-bg: rgba(255, 255, 255, 0.85);
-    --toolbar-border: rgba(255, 255, 255, 0.3);
+    --toolbar-border: rgba(203, 213, 225, 0.5);
     
-    /* Resume Theme Default Variables */
-    --cv-primary: #0f172a;    /* Deep Slate */
-    --cv-accent: #2563eb;     /* Professional Blue */
+    /* Resume Theme Defaults */
+    --cv-primary: #0f172a;
+    --cv-accent: #2563eb;
     --cv-bg: #ffffff;
-    --cv-sidebar: #f8fafc;    /* Very light gray/blue */
+    --cv-sidebar: #f1f5f9;
     --cv-text: #334155;
-    --cv-light-text: #64748b;
     --cv-font: 'Plus Jakarta Sans', sans-serif;
+    --cv-spacing: 1.6;
 }
 
 .dark-mode {
@@ -46,16 +43,16 @@ body {
     background-color: var(--app-bg); 
     background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
     background-size: 24px 24px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: #1e293b;
     transition: background-color 0.3s;
-    padding-top: 100px;
+    padding-top: 90px;
     padding-bottom: 60px;
     min-height: 100vh;
 }
 
 .dark-mode body {
-    background-image: radial-gradient(#1e293b 1px, transparent 1px);
+    background-image: radial-gradient(#334155 1px, transparent 1px);
     color: #f8fafc;
 }
 
@@ -64,251 +61,216 @@ body {
    ========================================= */
 .app-toolbar {
     position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
-    width: 95%; max-width: 1200px;
+    width: 96%; max-width: 1400px;
     background: var(--toolbar-bg);
     backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--toolbar-border);
-    border-radius: 16px;
+    border-radius: 12px;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 24px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    padding: 10px 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
     z-index: 9999;
-    transition: all 0.3s ease;
 }
 
-.tool-group {
-    display: flex; align-items: center; gap: 12px;
-}
+.tool-group { display: flex; align-items: center; gap: 10px; }
 .tool-divider { width: 1px; height: 24px; background: #e2e8f0; margin: 0 4px; }
 .dark-mode .tool-divider { background: #334155; }
 
-.logo-brand { font-size: 18px; font-weight: 700; color: var(--cv-accent); display: flex; align-items: center; gap: 8px; margin-right: 15px; letter-spacing: -0.5px; }
+.logo-brand { font-size: 18px; font-weight: 700; color: var(--cv-accent); display: flex; align-items: center; gap: 8px; margin-right: 15px; }
 
 .btn {
     background: #ffffff; color: #475569; border: 1px solid #e2e8f0;
-    padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
-    cursor: pointer; display: flex; align-items: center; gap: 8px;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    transition: all 0.2s ease;
 }
 .dark-mode .btn { background: #1e293b; color: #cbd5e1; border-color: #334155; }
-.btn:hover { background: #f1f5f9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.btn:hover { background: #f1f5f9; transform: translateY(-1px); }
 .dark-mode .btn:hover { background: #334155; }
 
 .btn-primary { background: var(--cv-accent); color: white; border: none; }
-.btn-primary:hover { background: #1d4ed8; color: white; }
+.btn-primary:hover { filter: brightness(1.1); color: white; }
 .btn-export { background: #0f172a; color: white; border: none; }
-.btn-export:hover { background: #000; color: white; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3); }
+.btn-export:hover { background: #000; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
 
-select, input[type=color] {
-    appearance: none; background: #f8fafc; border: 1px solid #e2e8f0; padding: 7px 12px; border-radius: 8px;
+select, input[type=color], input[type=range] {
+    appearance: none; background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 10px; border-radius: 6px;
     font-size: 13px; font-weight: 500; cursor: pointer; color: #334155; outline: none;
 }
 .dark-mode select { background: #1e293b; border-color: #334155; color: #e2e8f0; }
-input[type=color] { padding: 2px; width: 36px; height: 36px; cursor: pointer; }
-
+input[type=color] { padding: 0; width: 32px; height: 32px; border: none; border-radius: 4px; overflow: hidden; }
 input[type="file"] { display: none; }
 
 /* =========================================
-   Executive Resume Template Layout
+   Resume Template Configuration
    ========================================= */
-.workspace {
-    display: flex; justify-content: center; align-items: flex-start;
-    padding: 20px; overflow-x: auto;
-}
+.workspace { display: flex; justify-content: center; align-items: flex-start; padding: 20px; }
 
 .cv-page {
     width: 210mm; min-height: 297mm; /* Standard A4 */
     background: var(--cv-bg);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05);
-    border-radius: 2px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.05);
+    border-radius: 4px;
     display: flex;
     font-family: var(--cv-font);
     color: var(--cv-text);
-    line-height: 1.6;
-    overflow: hidden;
+    line-height: var(--cv-spacing);
     position: relative;
     transition: flex-direction 0.4s ease;
 }
-
 .cv-page.swapped { flex-direction: row-reverse; }
 
-/* Sidebar (Left) */
-.cv-sidebar {
-    width: 32%;
-    background: var(--cv-sidebar);
-    padding: 45px 35px;
-    display: flex; flex-direction: column; gap: 30px;
-    border-right: 1px solid #e2e8f0;
-}
+/* Layout Columns */
+.cv-sidebar { width: 33%; background: var(--cv-sidebar); padding: 40px 30px; display: flex; flex-direction: column; gap: 30px; border-right: 1px solid #e2e8f0; }
+.cv-main { width: 67%; padding: 40px 40px; display: flex; flex-direction: column; gap: 25px; }
 
-/* Main Content (Right) */
-.cv-main {
-    width: 68%;
-    padding: 45px 45px;
-    display: flex; flex-direction: column; gap: 28px;
-}
-
-/* Typography & Elements */
-.cv-header-name { font-size: 2.4rem; font-weight: 700; color: var(--cv-primary); line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 6px; }
-.cv-header-title { font-size: 1.1rem; font-weight: 500; color: var(--cv-accent); letter-spacing: 0.5px; text-transform: uppercase; }
+/* Typography */
+.cv-header-name { font-size: 2.5rem; font-weight: 700; color: var(--cv-primary); line-height: 1.1; margin-bottom: 6px; letter-spacing: -0.02em; }
+.cv-header-title { font-size: 1.1rem; font-weight: 600; color: var(--cv-accent); text-transform: uppercase; letter-spacing: 1px; }
 
 .cv-section-title {
-    font-size: 1.1rem; font-weight: 700; color: var(--cv-primary);
-    text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 16px; padding-bottom: 6px;
+    font-size: 1.15rem; font-weight: 700; color: var(--cv-primary);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 15px; padding-bottom: 5px;
     border-bottom: 2px solid #e2e8f0;
     position: relative;
 }
-.cv-section-title::after {
-    content: ''; position: absolute; left: 0; bottom: -2px;
-    width: 30px; height: 2px; background: var(--cv-accent);
-}
+.cv-section-title::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 40px; height: 2px; background: var(--cv-accent); }
 
-.cv-contact-item { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; font-weight: 500; margin-bottom: 12px; color: var(--cv-text); }
-.cv-contact-item i { color: var(--cv-accent); font-size: 1.1rem; width: 16px; text-align: center; }
+.cv-contact-item { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; font-weight: 500; margin-bottom: 10px; color: var(--cv-text); }
+.cv-contact-item i { color: var(--cv-accent); width: 16px; text-align: center; }
 
-/* Experience/Education Cards */
-.cv-card { position: relative; margin-bottom: 20px; transition: 0.2s; border-radius: 6px;}
+/* Cards (Experience/Education) */
+.cv-card { position: relative; margin-bottom: 20px; border-radius: 6px; transition: 0.2s; padding: 4px; margin-left: -4px; margin-right: -4px;}
 .cv-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
-.cv-card-title { font-size: 1.05rem; font-weight: 700; color: var(--cv-primary); }
-.cv-card-date { font-size: 0.85rem; font-weight: 600; color: var(--cv-accent); background: rgba(37, 99, 235, 0.1); padding: 4px 10px; border-radius: 20px; }
-.cv-card-org { font-size: 0.95rem; font-weight: 500; color: var(--cv-light-text); margin-bottom: 8px; display: flex; align-items: center; gap: 6px;}
-.cv-card-desc { font-size: 0.9rem; color: var(--cv-text); padding-left: 18px; }
+.cv-card-title { font-size: 1.1rem; font-weight: 700; color: var(--cv-primary); }
+.cv-card-date { font-size: 0.85rem; font-weight: 600; color: var(--cv-accent); }
+.cv-card-org { font-size: 0.95rem; font-weight: 600; color: var(--cv-text); margin-bottom: 8px; }
+.cv-card-desc { font-size: 0.9rem; padding-left: 18px; }
 .cv-card-desc li { margin-bottom: 5px; }
 
-/* Modern Skills Tags */
+/* Modern Skills Pills */
 .skills-container { display: flex; flex-wrap: wrap; gap: 8px; }
 .skill-tag { 
     background: #ffffff; border: 1px solid #cbd5e1; color: var(--cv-text);
-    padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;
-    position: relative; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+    position: relative; transition: all 0.2s;
 }
-.skill-tag:hover { border-color: var(--cv-accent); color: var(--cv-accent); }
+.skill-tag:hover { border-color: var(--cv-accent); color: var(--cv-accent); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 
-/* Photo */
-.cv-photo-wrapper { width: 120px; height: 120px; margin-bottom: 10px; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 2px solid white;}
+/* Profile Photo */
+.cv-photo-wrapper { width: 130px; height: 130px; margin: 0 auto 10px auto; border-radius: 50%; overflow: hidden; position: relative; cursor: pointer; border: 3px solid white; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
 .cv-photo-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-.photo-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.6); display: flex; justify-content: center; align-items: center; color: white; opacity: 0; transition: 0.2s; backdrop-filter: blur(2px); }
+.photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; color: white; opacity: 0; transition: 0.2s; }
 .cv-photo-wrapper:hover .photo-overlay { opacity: 1; }
 
 /* Summary */
-.cv-summary { font-size: 0.95rem; line-height: 1.7; color: var(--cv-text); text-align: justify; }
+.cv-summary { font-size: 0.95rem; text-align: justify; }
 
 /* =========================================
-   Interactive WYSIWYG Editing Elements
+   Interactive Editing Mechanics
    ========================================= */
 [contenteditable="true"] { 
-    outline: none; transition: background 0.2s, box-shadow 0.2s; 
-    border-radius: 4px; padding: 2px 4px; margin: -2px -4px;
+    outline: none; border-radius: 4px; padding: 2px 4px; margin: -2px -4px; 
+    border: 1px solid transparent; transition: all 0.2s ease;
 }
 [contenteditable="true"]:hover, [contenteditable="true"]:focus { 
-    background: rgba(37, 99, 235, 0.05); 
-    box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.3);
+    background: rgba(37, 99, 235, 0.04); 
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
-/* Hover Action Menus */
-.hover-actions { position: absolute; right: -10px; top: -10px; display: flex; gap: 4px; opacity: 0; transform: translateY(5px); transition: all 0.2s ease; z-index: 10; }
+/* Smart Hover Controls (Move & Delete) */
+.hover-actions { position: absolute; right: -10px; top: -15px; display: flex; gap: 4px; opacity: 0; transform: translateY(5px); transition: all 0.2s; z-index: 10; }
 .cv-card:hover .hover-actions, .cv-section:hover > .hover-actions, .skill-tag:hover .hover-actions { opacity: 1; transform: translateY(0); }
+.cv-card:hover { background: rgba(0,0,0,0.02); }
 
 .action-icon {
-    width: 24px; height: 24px; border-radius: 6px; background: white; border: 1px solid #e2e8f0;
+    width: 26px; height: 26px; border-radius: 6px; background: white; border: 1px solid #e2e8f0;
     color: #64748b; display: flex; justify-content: center; align-items: center; cursor: pointer; font-size: 11px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.2s;
 }
-.action-icon:hover { background: #f8fafc; color: var(--cv-primary); }
+.action-icon:hover { background: #f8fafc; color: var(--cv-accent); }
 .action-icon.danger:hover { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
 
-/* Container mapping for hovers */
 .cv-section { position: relative; }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-/* Notifications */
-.toast {
-    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-    background: #0f172a; color: white; padding: 12px 24px; border-radius: 30px;
-    font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10000;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
+/* Hint Banner */
+.keyboard-hint { text-align: center; font-size: 12px; color: #64748b; margin-top: 15px; font-weight: 500; }
 
 /* =========================================
-   Strict Print & Export CSS
+   Print & PDF Configuration
    ========================================= */
 @media print {
     @page { size: A4; margin: 0; }
     body { background: white !important; padding: 0 !important; min-height: 0; }
-    .app-toolbar, .hover-actions, .photo-overlay, .toast { display: none !important; }
+    .app-toolbar, .hover-actions, .photo-overlay, .keyboard-hint { display: none !important; }
     .workspace { padding: 0; display: block; }
     .cv-page { box-shadow: none !important; border-radius: 0; }
-    [contenteditable="true"] { padding: 0 !important; margin: 0 !important; box-shadow: none !important; background: transparent !important; }
+    [contenteditable="true"] { padding: 0 !important; margin: 0 !important; border: none !important; background: transparent !important; }
     
-    /* Crucial Page Break logic for PDF */
     .cv-card, .cv-section-title, .cv-summary, .cv-contact-item { page-break-inside: avoid; break-inside: avoid; }
+    .cv-card { margin-left: 0; margin-right: 0; padding: 0; }
     
-    /* Preserve Colors in print */
     .cv-sidebar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .cv-card-date { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .skill-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .skill-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; border-color: #cbd5e1 !important; }
 }
-
 </style>
 </head>
 <body>
 
-<!-- Application Toolbar -->
 <div class="app-toolbar">
     <div class="tool-group">
-        <div class="logo-brand"><i class="fa-solid fa-layer-group"></i> Aura CV</div>
+        <div class="logo-brand"><i class="fa-solid fa-wand-magic-sparkles"></i> Aura CV</div>
         <div class="tool-divider"></div>
-        <button class="btn" onclick="toggleLayout()" title="Flip Layout"><i class="fa-solid fa-arrows-left-right"></i> Swap</button>
+        <button class="btn" onclick="toggleLayout()" title="Swap Columns"><i class="fa-solid fa-left-right"></i> Swap</button>
+        <button class="btn" onclick="document.body.classList.toggle('dark-mode')" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
     </div>
 
     <div class="tool-group">
         <select id="fontSelect" onchange="updateTheme()">
             <option value="'Plus Jakarta Sans', sans-serif">Modern (Jakarta)</option>
-            <option value="'Playfair Display', serif">Classic (Playfair)</option>
             <option value="'Inter', sans-serif">Clean (Inter)</option>
+            <option value="'Playfair Display', serif">Classic (Playfair)</option>
         </select>
         
-        <input type="color" id="colorSelect" value="#2563eb" onchange="updateTheme()" title="Theme Accent Color">
+        <input type="range" id="spacingSlider" min="1.4" max="2.0" step="0.1" value="1.6" oninput="updateTheme()" title="Line Spacing" style="width: 80px;">
+        <input type="color" id="colorSelect" value="#2563eb" onchange="updateTheme()" title="Accent Color">
+        
         <div class="tool-divider"></div>
         <label class="btn">
             <i class="fa-solid fa-image"></i> Photo
             <input type="file" accept="image/*" onchange="uploadImage(event)">
         </label>
-        <button class="btn" onclick="addExperience()"><i class="fa-solid fa-briefcase"></i> Add Exp</button>
-        <button class="btn" onclick="addEducation()"><i class="fa-solid fa-graduation-cap"></i> Add Edu</button>
+        <button class="btn" onclick="addExperience()"><i class="fa-solid fa-briefcase"></i> + Exp</button>
+        <button class="btn" onclick="addEducation()"><i class="fa-solid fa-graduation-cap"></i> + Edu</button>
+        <button class="btn" onclick="addCustomSection()"><i class="fa-solid fa-layer-group"></i> + Section</button>
     </div>
 
     <div class="tool-group">
         <button class="btn" onclick="resetWorkspace()" title="Reset All"><i class="fa-solid fa-rotate-right"></i></button>
         <button class="btn btn-primary" onclick="saveWorkspace()"><i class="fa-solid fa-cloud-arrow-up"></i> Save</button>
-        <button class="btn btn-export" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Download PDF</button>
+        <button class="btn btn-export" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
     </div>
 </div>
 
-<!-- Workspace Area -->
+<div class="keyboard-hint">
+    <i class="fa-solid fa-keyboard"></i> Pro Tip: Select text and press <strong>Ctrl+B</strong> (Bold), <strong>Ctrl+I</strong> (Italic), or <strong>Ctrl+U</strong> (Underline). Hover over items to Move or Delete them.
+</div>
+
 <div class="workspace">
-    <!-- The Resume A4 Document -->
     <div class="cv-page" id="cv-document">
         
-        <!-- Sidebar -->
         <div class="cv-sidebar">
             <div class="cv-photo-wrapper" onclick="document.querySelector('input[type=file]').click()">
-                <img id="cvPhoto" src="https://placehold.co/400x400/e2e8f0/64748b?text=Upload\nPhoto" alt="Profile Photo">
-                <div class="photo-overlay"><i class="fa-solid fa-pen"></i></div>
+                <img id="cvPhoto" src="https://placehold.co/400x400/e2e8f0/64748b?text=Upload\nPhoto" alt="Profile">
+                <div class="photo-overlay"><i class="fa-solid fa-camera"></i></div>
             </div>
 
             <div class="cv-section">
                 <div class="cv-section-title">Contact</div>
                 <div class="cv-contact-item">
                     <i class="fa-solid fa-phone"></i>
-                    <span contenteditable="true" spellcheck="false">+91 8320548305</span>
+                    <span contenteditable="true" spellcheck="false">8320548305</span>
                 </div>
                 <div class="cv-contact-item">
                     <i class="fa-solid fa-envelope"></i>
@@ -320,7 +282,7 @@ input[type="file"] { display: none; }
                 </div>
                 <div class="cv-contact-item">
                     <i class="fa-brands fa-linkedin-in"></i>
-                    <span contenteditable="true" spellcheck="false">linkedin.com/in/pragya</span>
+                    <span contenteditable="true" spellcheck="false">linkedin.com/in/pragyamehta</span>
                 </div>
             </div>
 
@@ -328,26 +290,28 @@ input[type="file"] { display: none; }
                 <div class="hover-actions" style="top: -5px; right: 0;">
                     <button class="action-icon" onclick="addSkill()" title="Add Skill"><i class="fa-solid fa-plus"></i></button>
                 </div>
-                <div class="cv-section-title">Core Skills</div>
+                <div class="cv-section-title">Technical Skills</div>
                 <div class="skills-container" id="skillsWrapper">
-                    
                     <div class="skill-tag">
-                        <div class="hover-actions" style="top: -12px; right: -10px;"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
-                        <span contenteditable="true" spellcheck="false">HTML/CSS Layouts</span>
+                        <div class="hover-actions"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
+                        <span contenteditable="true" spellcheck="false">HTML & CSS Layouts</span>
                     </div>
                     <div class="skill-tag">
-                        <div class="hover-actions" style="top: -12px; right: -10px;"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
+                        <div class="hover-actions"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
                         <span contenteditable="true" spellcheck="false">Windows Server 2022</span>
                     </div>
                     <div class="skill-tag">
-                        <div class="hover-actions" style="top: -12px; right: -10px;"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
-                        <span contenteditable="true" spellcheck="false">Networking (CCNA Concepts)</span>
+                        <div class="hover-actions"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
+                        <span contenteditable="true" spellcheck="false">Computer Networking</span>
                     </div>
                     <div class="skill-tag">
-                        <div class="hover-actions" style="top: -12px; right: -10px;"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
+                        <div class="hover-actions"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
                         <span contenteditable="true" spellcheck="false">Hardware Troubleshooting</span>
                     </div>
-                    
+                    <div class="skill-tag">
+                        <div class="hover-actions"><button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button></div>
+                        <span contenteditable="true" spellcheck="false">System Administration</span>
+                    </div>
                 </div>
             </div>
             
@@ -360,75 +324,69 @@ input[type="file"] { display: none; }
 
         </div>
 
-        <!-- Main Content -->
         <div class="cv-main" id="cvMainContent">
             
-            <!-- Header Area -->
             <div>
                 <h1 class="cv-header-name" contenteditable="true" spellcheck="false">Pragya Mehta</h1>
                 <h2 class="cv-header-title" contenteditable="true" spellcheck="false">IT Support & Web Enthusiast</h2>
             </div>
 
-            <!-- Profile Summary -->
             <div class="cv-section">
                 <div class="cv-section-title">Professional Summary</div>
                 <p class="cv-summary" contenteditable="true" spellcheck="false">
-                    Dedicated IT enthusiast currently pursuing a Bachelor of Computer Applications with a strong foundation in web technologies, computer networking, and system administration. Experienced in front-end development and practical hardware troubleshooting. Aiming to leverage my technical knowledge and fast-learning capabilities in a dynamic IT Support or Data Center environment to ensure seamless operational continuity.
+                    Dedicated IT enthusiast currently pursuing a Bachelor of Computer Applications with a strong foundation in web technologies, computer networking, and system administration. Experienced in front-end development and practical hardware troubleshooting. Aiming to leverage my technical knowledge and fast-learning capabilities in a dynamic IT Support or Data Center environment.
                 </p>
             </div>
 
-            <!-- Experience -->
-            <div class="cv-section" id="expContainer">
+            <div class="cv-section">
                 <div class="hover-actions" style="top: 0; right: 0;">
                     <button class="action-icon" onclick="addExperience()" title="Add Experience"><i class="fa-solid fa-plus"></i></button>
                 </div>
-                <div class="cv-section-title">Professional Experience</div>
-                
-                <div class="cv-card">
-                    <div class="hover-actions">
-                        <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+                <div class="cv-section-title">Experience</div>
+                <div id="expContainer">
+                    <div class="cv-card">
+                        <div class="hover-actions">
+                            <button class="action-icon" onclick="moveUp(this)" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="action-icon" onclick="moveDown(this)" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <div class="cv-card-header">
+                            <div class="cv-card-title" contenteditable="true" spellcheck="false">Customer Support Executive</div>
+                            <div class="cv-card-date" contenteditable="true" spellcheck="false">Recent – Present</div>
+                        </div>
+                        <div class="cv-card-org" contenteditable="true" spellcheck="false">Maxicus | Vadodara</div>
+                        <ul class="cv-card-desc" contenteditable="true" spellcheck="false">
+                            <li>Provided excellent customer support and technical troubleshooting assistance.</li>
+                            <li>Maintained high satisfaction ratings by resolving inquiries swiftly.</li>
+                        </ul>
                     </div>
-                    <div class="cv-card-header">
-                        <div class="cv-card-title" contenteditable="true" spellcheck="false">Customer Support Executive</div>
-                        <div class="cv-card-date" contenteditable="true" spellcheck="false">2023 – Present</div>
-                    </div>
-                    <div class="cv-card-org">
-                        <i class="fa-solid fa-building" style="color:#94a3b8; font-size: 12px;"></i>
-                        <span contenteditable="true" spellcheck="false">Maxicus | Vadodara, Gujarat</span>
-                    </div>
-                    <ul class="cv-card-desc" contenteditable="true" spellcheck="false">
-                        <li>Provided rapid-response customer support and Tier-1 technical troubleshooting assistance.</li>
-                        <li>Maintained high satisfaction ratings (CSAT) by resolving client inquiries effectively and documenting software issues.</li>
-                    </ul>
                 </div>
             </div>
 
-            <!-- Education -->
-            <div class="cv-section" id="eduContainer">
+            <div class="cv-section">
                 <div class="hover-actions" style="top: 0; right: 0;">
                     <button class="action-icon" onclick="addEducation()" title="Add Education"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <div class="cv-section-title">Education</div>
-                
-                <div class="cv-card">
-                    <div class="hover-actions">
-                        <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+                <div id="eduContainer">
+                    <div class="cv-card">
+                        <div class="hover-actions">
+                            <button class="action-icon" onclick="moveUp(this)" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button class="action-icon" onclick="moveDown(this)" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <div class="cv-card-header">
+                            <div class="cv-card-title" contenteditable="true" spellcheck="false">Bachelor of Computer Applications (BCA)</div>
+                            <div class="cv-card-date" contenteditable="true" spellcheck="false">Currently Pursuing</div>
+                        </div>
+                        <div class="cv-card-org" contenteditable="true" spellcheck="false">Distance Learning</div>
+                        <ul class="cv-card-desc" contenteditable="true" spellcheck="false">
+                            <li>Focusing on Web Technologies, Programming, and Systems Management.</li>
+                        </ul>
                     </div>
-                    <div class="cv-card-header">
-                        <div class="cv-card-title" contenteditable="true" spellcheck="false">Bachelor of Computer Applications (BCA)</div>
-                        <div class="cv-card-date" contenteditable="true" spellcheck="false">Est. 2026</div>
-                    </div>
-                    <div class="cv-card-org">
-                        <i class="fa-solid fa-graduation-cap" style="color:#94a3b8; font-size: 12px;"></i>
-                        <span contenteditable="true" spellcheck="false">Distance Learning Program</span>
-                    </div>
-                    <ul class="cv-card-desc" contenteditable="true" spellcheck="false">
-                        <li>Focusing on System Architecture, Data Structures, and Web Development.</li>
-                    </ul>
                 </div>
             </div>
 
-            <!-- Declaration -->
             <div class="cv-section" id="declContainer">
                 <div class="hover-actions" style="top: 0; right: 0;">
                     <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()" title="Remove Declaration"><i class="fa-solid fa-trash"></i></button>
@@ -437,7 +395,7 @@ input[type="file"] { display: none; }
                 <p class="cv-summary" contenteditable="true" spellcheck="false" style="margin-bottom: 25px;">
                     I hereby declare that the information provided above is true and correct to the best of my knowledge and belief.
                 </p>
-                <div style="font-weight: 700; color: var(--cv-primary);" contenteditable="true" spellcheck="false">
+                <div style="font-weight: 700; color: var(--cv-primary); font-size: 1.1rem;" contenteditable="true" spellcheck="false">
                     Pragya Mehta
                 </div>
             </div>
@@ -446,29 +404,16 @@ input[type="file"] { display: none; }
     </div>
 </div>
 
-<div class="toast" id="toastBox">
-    <i class="fa-solid fa-circle-check"></i> <span id="toastMsg">Action Successful</span>
-</div>
-
 <script>
 // --- Core Engine & Theming ---
 function updateTheme() {
-    const font = document.getElementById('fontSelect').value;
-    const color = document.getElementById('colorSelect').value;
-    
-    document.documentElement.style.setProperty('--cv-font', font);
-    document.documentElement.style.setProperty('--cv-accent', color);
+    document.documentElement.style.setProperty('--cv-font', document.getElementById('fontSelect').value);
+    document.documentElement.style.setProperty('--cv-spacing', document.getElementById('spacingSlider').value);
+    document.documentElement.style.setProperty('--cv-accent', document.getElementById('colorSelect').value);
 }
 
 function toggleLayout() {
     document.getElementById('cv-document').classList.toggle('swapped');
-}
-
-function showToast(msg) {
-    const box = document.getElementById('toastBox');
-    document.getElementById('toastMsg').innerText = msg;
-    box.classList.add('show');
-    setTimeout(() => box.classList.remove('show'), 3000);
 }
 
 function uploadImage(e) {
@@ -485,16 +430,15 @@ function addExperience() {
     const html = `
         <div class="cv-card">
             <div class="hover-actions">
+                <button class="action-icon" onclick="moveUp(this)" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button class="action-icon" onclick="moveDown(this)" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
                 <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
             </div>
             <div class="cv-card-header">
-                <div class="cv-card-title" contenteditable="true" spellcheck="false">New Job Title</div>
+                <div class="cv-card-title" contenteditable="true" spellcheck="false">New Position Title</div>
                 <div class="cv-card-date" contenteditable="true" spellcheck="false">Year - Year</div>
             </div>
-            <div class="cv-card-org">
-                <i class="fa-solid fa-building" style="color:#94a3b8; font-size: 12px;"></i>
-                <span contenteditable="true" spellcheck="false">Company Name | Location</span>
-            </div>
+            <div class="cv-card-org" contenteditable="true" spellcheck="false">Company Name | Location</div>
             <ul class="cv-card-desc" contenteditable="true" spellcheck="false">
                 <li>Detail your key achievements and responsibilities here.</li>
             </ul>
@@ -506,16 +450,15 @@ function addEducation() {
     const html = `
         <div class="cv-card">
             <div class="hover-actions">
+                <button class="action-icon" onclick="moveUp(this)" title="Move Up"><i class="fa-solid fa-arrow-up"></i></button>
+                <button class="action-icon" onclick="moveDown(this)" title="Move Down"><i class="fa-solid fa-arrow-down"></i></button>
                 <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
             </div>
             <div class="cv-card-header">
                 <div class="cv-card-title" contenteditable="true" spellcheck="false">Degree or Certification</div>
                 <div class="cv-card-date" contenteditable="true" spellcheck="false">Year</div>
             </div>
-            <div class="cv-card-org">
-                <i class="fa-solid fa-graduation-cap" style="color:#94a3b8; font-size: 12px;"></i>
-                <span contenteditable="true" spellcheck="false">Institution Name</span>
-            </div>
+            <div class="cv-card-org" contenteditable="true" spellcheck="false">Institution Name</div>
         </div>`;
     document.getElementById('eduContainer').insertAdjacentHTML('beforeend', html);
 }
@@ -531,57 +474,70 @@ function addSkill() {
     document.getElementById('skillsWrapper').insertAdjacentHTML('beforeend', html);
 }
 
-// --- Data & PDF Export ---
+function addCustomSection() {
+    const html = `
+        <div class="cv-section">
+            <div class="hover-actions" style="top: 0; right: 0;">
+                <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            <div class="cv-section-title" contenteditable="true">Custom Section</div>
+            <div class="cv-card">
+                <div class="hover-actions">
+                    <button class="action-icon" onclick="moveUp(this)"><i class="fa-solid fa-arrow-up"></i></button>
+                    <button class="action-icon" onclick="moveDown(this)"><i class="fa-solid fa-arrow-down"></i></button>
+                    <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <div class="cv-card-header">
+                    <div class="cv-card-title" contenteditable="true" spellcheck="false">Project / Certificate Name</div>
+                    <div class="cv-card-date" contenteditable="true" spellcheck="false">Date</div>
+                </div>
+                <div class="cv-card-org" contenteditable="true" spellcheck="false">Sub-text or Link</div>
+                <ul class="cv-card-desc" contenteditable="true" spellcheck="false"><li>Description goes here.</li></ul>
+            </div>
+        </div>`;
+    
+    const mainCol = document.getElementById('cvMainContent');
+    const declaration = document.getElementById('declContainer');
+    if (declaration) { mainCol.insertBefore(document.createRange().createContextualFragment(html), declaration); } 
+    else { mainCol.insertAdjacentHTML('beforeend', html); }
+}
+
+// --- Reordering Logic ---
+function moveUp(btn) {
+    const card = btn.closest('.cv-card');
+    if (card.previousElementSibling) { card.parentNode.insertBefore(card, card.previousElementSibling); }
+}
+function moveDown(btn) {
+    const card = btn.closest('.cv-card');
+    if (card.nextElementSibling) { card.parentNode.insertBefore(card.nextElementSibling, card); }
+}
+
+// --- High-End Data & PDF Export ---
 function exportPDF() {
-    showToast("Preparing High-Res PDF...");
+    const btn = document.querySelector('.btn-export');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rendering...';
+    
     const element = document.getElementById('cv-document');
     
-    // Configuration for Enterprise-grade export
+    // Enterprise configuration for crystal clear text
     const opt = {
         margin:       0,
         filename:     'Pragya_Mehta_Resume.pdf',
         image:        { type: 'jpeg', quality: 1 },
-        html2canvas:  { scale: 3, useCORS: true, logging: false }, // Scale 3 ensures text is razor sharp
+        html2canvas:  { scale: 3, useCORS: true, logging: false }, 
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     
-    // Hide UI elements during render by temporarily adding a global print class
-    document.body.classList.add('exporting');
+    // Hide UI elements during render
     const hovers = document.querySelectorAll('.hover-actions, .photo-overlay');
     hovers.forEach(el => el.style.display = 'none');
     
     html2pdf().set(opt).from(element).save().then(() => {
-        // Restore UI
         hovers.forEach(el => el.style.display = '');
-        document.body.classList.remove('exporting');
-        showToast("PDF Downloaded Successfully");
+        btn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Export PDF';
     });
 }
 
 // --- Persistence ---
 function saveWorkspace() {
-    const htmlState = document.getElementById('cv-document').innerHTML;
-    localStorage.setItem('auraResumeData', htmlState);
-    showToast("Workspace Saved to Browser");
-}
-
-function resetWorkspace() {
-    if(confirm("Are you sure? This will reset all your changes to the default template.")){
-        localStorage.removeItem('auraResumeData');
-        location.reload();
-    }
-}
-
-window.onload = () => {
-    const saved = localStorage.getItem('auraResumeData');
-    if (saved) {
-        // Optional: Ask user if they want to load, or auto-load
-        document.getElementById('cv-document').innerHTML = saved;
-        showToast("Restored your previous session");
-    }
-    updateTheme();
-};
-</script>
-
-</body>
-</html>
+    localStorage.setItem('auraResumeV2', document.getElementById('cv-document').innerHTML);
