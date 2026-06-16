@@ -1,2455 +1,465 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Resume Builder Pro v3.0</title>
+<title>Pro Resume Builder - Clean Print Edition</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-
-:root{
-
---primary:#1e3a8a;
---secondary:#2563eb;
---accent:#3b82f6;
-
---sidebar:#1e293b;
---background:#f1f5f9;
---white:#ffffff;
---text:#222;
-
---radius:10px;
---shadow:0 8px 30px rgba(0,0,0,.12);
-
---font:Poppins,sans-serif;
-
-}
-
-.dark{
-
---background:#101827;
---white:#1f2937;
---text:#f4f4f4;
---sidebar:#111827;
---primary:#60a5fa;
---secondary:#3b82f6;
---accent:#2563eb;
-
-}
-
-*{
-
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:var(--font);
-
-}
-
-html{
-
-scroll-behavior:smooth;
-
-}
-
-body{
-
-background:var(--background);
-padding:100px 30px;
-transition:.3s;
-
-}
-
-.toolbar{
-
-position:fixed;
-top:0;
-left:0;
-right:0;
-
-background:white;
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:15px 25px;
-
-box-shadow:0 5px 20px rgba(0,0,0,.15);
-
-z-index:9999;
-
-flex-wrap:wrap;
-
-gap:15px;
-
-}
-
-.toolbar-left,
-.toolbar-right{
-
-display:flex;
-align-items:center;
-gap:10px;
-flex-wrap:wrap;
-
-}
-
-.btn{
-
-background:var(--primary);
-color:white;
-border:none;
-padding:10px 18px;
-cursor:pointer;
-border-radius:8px;
-transition:.25s;
-
-font-size:14px;
-
-}
-
-.btn:hover{
-
-transform:translateY(-2px);
-
-}
-
-.btn.green{
-
-background:#16a34a;
-
-}
-
-.btn.orange{
-
-background:#ea580c;
-
-}
-
-.btn.red{
-
-background:#dc2626;
-
-}
-
-.btn.blue{
-
-background:#2563eb;
-
-}
-
-.btn.gray{
-
-background:#64748b;
-
-}
-
-select,
-input[type=color]{
-
-padding:8px;
-border-radius:8px;
-border:1px solid #ccc;
-
-}
-
-.resume{
-
-width:900px;
-margin:auto;
-
-background:white;
-
-display:flex;
-
-box-shadow:var(--shadow);
-
-min-height:297mm;
-
-overflow:hidden;
-
-}
-
-.sidebar{
-
-width:34%;
-background:var(--sidebar);
-color:white;
-
-padding:30px;
-
-}
-
-.main{
-
-width:66%;
-padding:35px;
-
-background:white;
-
-}
-
-.photo-box{
-
-width:150px;
-height:150px;
-
-margin:auto;
-
-border-radius:50%;
-
-background:#ddd;
-
-overflow:hidden;
-
-border:5px solid white;
-
-cursor:pointer;
-
-position:relative;
-
-}
-
-.photo-box img{
-
-width:100%;
-height:100%;
-object-fit:cover;
-
-}
-
-.photo-overlay{
-
-position:absolute;
-inset:0;
-
-background:rgba(0,0,0,.45);
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-opacity:0;
-
-transition:.3s;
-
-color:white;
-font-size:30px;
-
-}
-
-.photo-box:hover .photo-overlay{
-
-opacity:1;
-
-}
-
-h1{
-
-text-align:center;
-font-size:30px;
-margin-top:20px;
-
-}
-
-.job-title{
-
-text-align:center;
-margin-top:5px;
-opacity:.9;
-
-}
-
-.section{
-
-margin-top:30px;
-
-}
-
-.section-title{
-
-font-size:18px;
-font-weight:700;
-margin-bottom:15px;
-
-padding-bottom:6px;
-
-border-bottom:2px solid var(--accent);
-
-text-transform:uppercase;
-
-letter-spacing:1px;
-
-}
-
-.sidebar .section-title{
-
-border-color:white;
-
-}
-
-.contact p{
-
-margin-bottom:12px;
-
-display:flex;
-
-gap:10px;
-
-align-items:center;
-
-font-size:14px;
-
-}
-
-.contact i{
-
-width:20px;
-
-text-align:center;
-
-}
-
-.skill{
-
-margin-bottom:18px;
-
-}
-
-.skill-name{
-
-margin-bottom:6px;
-
-font-size:14px;
-
-}
-
-.progress{
-
-height:8px;
-
-background:#d1d5db;
-
-border-radius:30px;
-
-overflow:hidden;
-
-}
-
-.progress div{
-
-height:100%;
-
-background:#3b82f6;
-
-width:80%;
-
-}
-
-.card{
-
-background:#f8fafc;
-
-border-left:5px solid var(--secondary);
-
-padding:18px;
-
-margin-bottom:18px;
-
-border-radius:10px;
-
-position:relative;
-
-transition:.25s;
-
-}
-
-.card:hover{
-
-transform:translateY(-3px);
-
-}
-
-.delete{
-
-position:absolute;
-
-right:10px;
-top:10px;
-
-width:30px;
-height:30px;
-
-border:none;
-
-border-radius:50%;
-
-background:#dc2626;
-color:white;
-
-display:none;
-
-cursor:pointer;
-
-}
-
-.card:hover .delete{
-
-display:block;
-
-}
-
-[contenteditable]{
-
-outline:none;
-
-transition:.2s;
-
-}
-
-[contenteditable]:hover{
-
-background:#eef6ff;
-
-}
-
-.sidebar [contenteditable]:hover{
-
-background:rgba(255,255,255,.12);
-
-}
-
-.floating{
-
-position:fixed;
-
-bottom:25px;
-right:25px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:10px;
-
-z-index:999;
-
-}
-
-.floating button{
-
-width:55px;
-
-height:55px;
-
-border:none;
-
-border-radius:50%;
-
-background:var(--primary);
-
-color:white;
-
-font-size:20px;
-
-cursor:pointer;
-
-box-shadow:0 8px 20px rgba(0,0,0,.2);
-
-}
-
-.toast{
-
-position:fixed;
-
-left:50%;
-
-bottom:40px;
-
-transform:translateX(-50%);
-
-background:#16a34a;
-
-color:white;
-
-padding:15px 25px;
-
-border-radius:8px;
-
-display:none;
-
-z-index:10000;
-
-}
-
-.progress-bar{
-
-height:12px;
-
-background:#ddd;
-
-border-radius:30px;
-
-margin-top:8px;
-
-overflow:hidden;
-
-}
-
-.progress-fill{
-
-height:100%;
-
-width:25%;
-
-background:#16a34a;
-
-transition:.4s;
-
-}
-
-.resume-status{
-
-margin-top:15px;
-
-font-size:13px;
-
-font-weight:600;
-
-}
-
-.template1{}
-
-.template2{
-
---sidebar:#0f172a;
---secondary:#059669;
-
-}
-
-.template3{
-
---sidebar:#4c1d95;
---secondary:#7c3aed;
-
-}
-
-.template4{
-
---sidebar:#991b1b;
---secondary:#dc2626;
-
-}
-
-.template5{
-
---sidebar:#14532d;
---secondary:#16a34a;
-
-}
-
-@media(max-width:980px){
-
-.resume{
-
-width:100%;
-flex-direction:column;
-
-}
-
-.sidebar{
-
-width:100%;
-
-}
-
-.main{
-
-width:100%;
-
-}
-
-.toolbar{
-
-position:relative;
-
-}
-
-body{
-
-padding:20px;
-
-}
-
-}
-
-@media print{
-
-body{
-
-padding:0;
-background:white;
-
-}
-
-.toolbar,
-.floating,
-.toast{
-
-display:none!important;
-
-}
-
-.resume{
-
-width:100%;
-box-shadow:none;
-min-height:auto;
-
-}
-
-}
-
-/* ---------- CONTINUE IN PART 2 ---------- *//* ===========================
-   Extra UI Components
-=========================== */
-
-.toolbar-title{
-    font-size:20px;
-    font-weight:700;
-    color:var(--primary);
-}
-
-.toolbar input[type=file]{
-    display:none;
-}
-
-.resume-tools{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin-top:15px;
-}
-
-.small-btn{
-
-padding:7px 12px;
-
-font-size:13px;
-
-border:none;
-
-border-radius:6px;
-
-background:var(--secondary);
-
-color:white;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-.small-btn:hover{
-
-transform:scale(1.05);
-
-}
-
-.badge{
-
-display:inline-block;
-
-padding:4px 10px;
-
-border-radius:20px;
-
-background:#dbeafe;
-
-color:#1d4ed8;
-
-font-size:12px;
-
-font-weight:600;
-
-margin-left:5px;
-
-}
-
-.character-counter{
-
-text-align:right;
-
-font-size:12px;
-
-color:#666;
-
-margin-top:5px;
-
-}
-
-.section-actions{
-
-display:flex;
-
-gap:8px;
-
-justify-content:flex-end;
-
-margin-bottom:10px;
-
-}
-
-.section-actions button{
-
-border:none;
-
-background:#f3f4f6;
-
-padding:6px 10px;
-
-border-radius:6px;
-
-cursor:pointer;
-
-}
-
-.section-actions button:hover{
-
-background:#dbeafe;
-
-}
-
-input[type=range]{
-
-width:120px;
-
-}
-
-.theme-preview{
-
-width:18px;
-
-height:18px;
-
-border-radius:50%;
-
-display:inline-block;
-
-border:1px solid #ccc;
-
-}
-
-hr{
-
-border:none;
-
-border-top:1px solid #ddd;
-
-margin:15px 0;
-
+/* =========================================
+   Base Variables & Theming
+   ========================================= */
+:root {
+    --primary: #1e3a8a;
+    --secondary: #2563eb;
+    --accent: #3b82f6;
+    --sidebar: #1e293b;
+    --background: #f1f5f9;
+    --white: #ffffff;
+    --text: #222;
+    --radius: 8px;
+    --shadow: 0 8px 30px rgba(0,0,0,.12);
+    --font: 'Poppins', sans-serif;
+    --line-height: 1.6;
+    --base-font-size: 14px;
+}
+
+.dark {
+    --background: #101827;
+    --white: #1f2937;
+    --text: #f4f4f4;
+    --sidebar: #111827;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font); }
+html { scroll-behavior: smooth; }
+body { background: var(--background); padding: 100px 30px 40px; transition: background 0.3s, color 0.3s; color: var(--text); }
+
+/* =========================================
+   Interactive UI (Toolbar & Controls)
+   ========================================= */
+.toolbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: var(--white); display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 25px; box-shadow: 0 4px 15px rgba(0,0,0,.1); z-index: 9999; flex-wrap: wrap; gap: 10px;
+}
+
+.toolbar-group { display: flex; align-items: center; gap: 10px; border-right: 1px solid #ddd; padding-right: 15px; }
+.toolbar-group:last-child { border-right: none; }
+.toolbar-title { font-size: 18px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px;}
+
+.btn {
+    background: var(--primary); color: white; border: none;
+    padding: 8px 14px; cursor: pointer; border-radius: 6px;
+    transition: transform 0.2s, opacity 0.2s; font-size: 13px; font-weight: 500;
+    display: flex; align-items: center; gap: 6px;
+}
+.btn:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn.green { background: #16a34a; }
+.btn.blue { background: #2563eb; }
+.btn.dark { background: #334155; }
+.btn.outline { background: transparent; border: 1px solid #ccc; color: var(--text); }
+
+select, input[type=color], input[type=range] { 
+    padding: 6px; border-radius: 6px; border: 1px solid #ccc; background: var(--white); color: var(--text); cursor: pointer;
+}
+label.btn { display: flex; align-items: center; gap: 6px; }
+input[type="file"] { display: none; }
+
+/* Control Labels */
+.control-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #666; margin-bottom: 2px; display: block;}
+.control-wrapper { display: flex; flex-direction: column; }
+
+/* =========================================
+   Resume Paper Layout
+   ========================================= */
+.resume-wrapper {
+    width: 210mm; /* Strict A4 width */
+    margin: auto;
+    background: var(--white);
+    box-shadow: var(--shadow);
+    min-height: 297mm; /* Strict A4 height */
+    position: relative;
+}
+
+.resume {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    font-size: var(--base-font-size);
+    line-height: var(--line-height);
+}
+
+.sidebar { width: 35%; background: var(--sidebar); color: white; padding: 40px 30px; }
+.main { width: 65%; padding: 40px 35px; background: transparent; }
+
+/* =========================================
+   Profile Components
+   ========================================= */
+.photo-box {
+    width: 140px; height: 140px; margin: 0 auto 25px auto; border-radius: 50%;
+    background: #e2e8f0; overflow: hidden; border: 4px solid rgba(255,255,255,0.2);
+    cursor: pointer; position: relative;
+}
+.photo-box img { width: 100%; height: 100%; object-fit: cover; }
+.photo-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,.5);
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; transition: .3s; color: white; font-size: 24px;
+}
+.photo-box:hover .photo-overlay { opacity: 1; }
+
+h1 { text-align: center; font-size: 2.2em; margin-bottom: 5px; font-weight: 600; line-height: 1.2; }
+.job-title { text-align: center; font-size: 1.1em; margin-bottom: 30px; color: var(--accent); font-weight: 500; }
+
+/* =========================================
+   Typography & Sections
+   ========================================= */
+.section { margin-bottom: 25px; position: relative; }
+.section-title {
+    font-size: 1.25em; font-weight: 600; margin-bottom: 15px; padding-bottom: 5px;
+    border-bottom: 2px solid var(--accent); text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary);
+}
+.sidebar .section-title { border-color: rgba(255,255,255,0.2); color: white; }
+
+.contact p { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95em; }
+.contact i { width: 16px; text-align: center; color: var(--accent); }
+.sidebar .contact i { color: white; opacity: 0.8; }
+
+.card {
+    background: transparent; padding: 0 0 15px 0; margin-bottom: 15px;
+    position: relative; border-radius: 0; transition: background 0.2s;
+}
+.card h3 { font-size: 1.1em; color: var(--text); font-weight: 600; margin-bottom: 2px; }
+.card p.org { font-weight: 500; color: var(--primary); margin-bottom: 2px; }
+.card small.date { display: block; font-size: 0.85em; color: #64748b; margin-bottom: 8px; font-style: italic;}
+.card ul { padding-left: 18px; margin-top: 5px; }
+.card ul li { margin-bottom: 4px; }
+
+/* =========================================
+   Editable States & Buttons (Hidden in Print)
+   ========================================= */
+[contenteditable="true"] { outline: none; transition: 0.2s; border-radius: 4px; padding: 2px 4px; margin: -2px -4px; border: 1px dashed transparent; }
+[contenteditable="true"]:hover, [contenteditable="true"]:focus { background: rgba(59, 130, 246, 0.08); border: 1px dashed var(--accent); }
+.sidebar [contenteditable="true"]:hover, .sidebar [contenteditable="true"]:focus { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,0.5); }
+
+.section-actions { position: absolute; right: 0; top: 0; display: flex; gap: 5px; opacity: 0; transition: 0.2s; }
+.section:hover .section-actions { opacity: 1; }
+.btn-icon { background: #e2e8f0; border: none; width: 26px; height: 26px; border-radius: 4px; cursor: pointer; color: #475569; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+.btn-icon:hover { background: var(--secondary); color: white; }
+
+.delete-card { position: absolute; right: -10px; top: 0; background: #ef4444; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; opacity: 0; transition: 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 10; }
+.card:hover .delete-card { opacity: 1; right: 0; }
+.card:hover { background: rgba(0,0,0,0.02); padding: 10px; margin: -10px -10px 5px -10px; border-radius: 8px;}
+
+/* Skills Progress */
+.skill { margin-bottom: 12px; }
+.skill-name { font-size: 0.95em; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;}
+.progress { height: 6px; background: rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; cursor: pointer; }
+.sidebar .progress { background: rgba(255,255,255,0.2); }
+.progress div { height: 100%; background: var(--accent); transition: width 0.3s; }
+
+/* Toast */
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 12px 25px; border-radius: 8px; font-weight: 500; display: none; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+/* =========================================
+   *** STRICT PRINT STYLES ***
+   ========================================= */
+@media print {
+    @page { size: A4; margin: 0; }
+    
+    body { background: white !important; padding: 0 !important; color: black !important; }
+    
+    /* Completely hide UI elements */
+    .toolbar, .section-actions, .delete-card, .photo-overlay, .toast { display: none !important; }
+    
+    .resume-wrapper { width: 100% !important; max-width: 100% !important; box-shadow: none !important; margin: 0 !important; }
+    .resume { min-height: 100vh !important; }
+    
+    /* Remove all interactive styling */
+    [contenteditable="true"] { border: none !important; background: transparent !important; padding: 0 !important; margin: 0 !important; }
+    
+    /* Prevent awkward page breaks */
+    .card, .skill, .section { page-break-inside: avoid; break-inside: avoid; }
+    
+    /* Reset card hovers for print */
+    .card:hover { background: transparent !important; padding: 0 0 15px 0 !important; margin: 0 0 15px 0 !important; }
+    
+    /* Ensure colors print properly */
+    .sidebar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .progress div { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
-
-/* END CSS */
-
 </style>
-
 </head>
-
 <body>
 
-<!-- =========================
-Toolbar
-========================= -->
-
 <div class="toolbar">
-
-<div class="toolbar-left">
-
-<div class="toolbar-title">
-
-<i class="fa-solid fa-file-lines"></i>
-
-Resume Builder Pro
-
-</div>
-
-<button class="btn green" onclick="saveResume()">
-<i class="fa-solid fa-floppy-disk"></i>
-Save
-</button>
-
-<button class="btn blue" onclick="window.print()">
-<i class="fa-solid fa-print"></i>
-Print
-</button>
-
-<button class="btn orange" onclick="toggleDarkMode()">
-<i class="fa-solid fa-moon"></i>
-Theme
-</button>
-
-<button class="btn red" onclick="clearResume()">
-<i class="fa-solid fa-trash"></i>
-Clear
-</button>
-
-<label class="btn gray">
-
-<i class="fa-solid fa-image"></i>
-
-Photo
-
-<input
-type="file"
-accept="image/*"
-id="photoUpload">
-
-</label>
-
-</div>
-
-<div class="toolbar-right">
-
-<select id="fontSelector">
-
-<option value="Poppins">Poppins</option>
-
-<option value="Arial">Arial</option>
-
-<option value="Verdana">Verdana</option>
-
-<option value="Georgia">Georgia</option>
-
-<option value="Times New Roman">Times New Roman</option>
-
-</select>
-
-<select id="templateSelector">
-
-<option value="template1">Professional</option>
-
-<option value="template2">Corporate</option>
-
-<option value="template3">Creative</option>
-
-<option value="template4">Executive</option>
-
-<option value="template5">Teacher</option>
-
-</select>
-
-<input type="color"
-id="themeColor"
-value="#2563eb">
-
-<button class="btn"
-onclick="addExperience()">
-
-<i class="fa-solid fa-plus"></i>
-
-Experience
-
-</button>
-
-<button class="btn"
-onclick="addEducation()">
-
-<i class="fa-solid fa-plus"></i>
-
-Education
-
-</button>
-
-<button class="btn"
-onclick="addProject()">
-
-<i class="fa-solid fa-plus"></i>
-
-Project
-
-</button>
-
-</div>
-
-</div>
-
-<!-- ===========================
-Resume
-=========================== -->
-
-<div class="resume template1" id="resume">
-
-<!-- Sidebar -->
-
-<div class="sidebar">
-
-<div class="photo-box">
-
-<img id="profileImage"
-
-src="https://placehold.co/300x300">
-
-<div class="photo-overlay">
-
-<i class="fa-solid fa-camera"></i>
-
-</div>
-
-</div>
-
-<h1
-contenteditable="true">
-
-Your Name
-
-</h1>
-
-<p
-class="job-title"
-contenteditable="true">
-
-Teacher / Developer / Engineer
-
-</p>
-
-<div class="resume-status">
-
-Resume Completion
-
-<span id="percentage">
-
-25%
-
-</span>
-
-<div class="progress-bar">
-
-<div
-class="progress-fill"
-id="progressFill">
-
-</div>
-
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="section-title">
-
-Contact
-
-</div>
-
-<div class="contact">
-
-<p>
-
-<i class="fa-solid fa-phone"></i>
-
-<span contenteditable="true">
-
-+91 9999999999
-
-</span>
-
-</p>
-
-<p>
-
-<i class="fa-solid fa-envelope"></i>
-
-<span contenteditable="true">
-
-email@example.com
-
-</span>
-
-</p>
-
-<p>
-
-<i class="fa-solid fa-location-dot"></i>
-
-<span contenteditable="true">
-
-Ahmedabad, Gujarat
-
-</span>
-
-</p>
-
-<p>
-
-<i class="fa-brands fa-linkedin"></i>
-
-<span contenteditable="true">
-
-linkedin.com/in/username
-
-</span>
-
-</p>
-
-<p>
-
-<i class="fa-solid fa-globe"></i>
-
-<span contenteditable="true">
-
-yourwebsite.com
-
-</span>
-
-</p>
-
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="section-title">
-
-Skills
-
-</div>
-
-<div class="skill">
-
-<div
-class="skill-name"
-contenteditable="true">
-
-Communication
-
-</div>
-
-<div class="progress">
-
-<div style="width:95%"></div>
-
-</div>
-
-</div>
-
-<div class="skill">
-
-<div
-class="skill-name"
-contenteditable="true">
-
-Leadership
-
-</div>
-
-<div class="progress">
-
-<div style="width:90%"></div>
-
-</div>
-
-</div>
-
-<div class="skill">
-
-<div
-class="skill-name"
-contenteditable="true">
-
-Teaching
-
-</div>
-
-<div class="progress">
-
-<div style="width:92%"></div>
-
-</div>
-
-</div>
-
-<div class="skill">
-
-<div
-class="skill-name"
-contenteditable="true">
-
-MS Office
-
-</div>
-
-<div class="progress">
-
-<div style="width:85%"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="section">
-
-<div class="section-title">
-
-Languages
-
-</div>
-
-<ul
-contenteditable="true">
-
-<li>English</li>
-
-<li>Hindi</li>
-
-<li>Gujarati</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- Main Area Starts -->
-
-<div class="main">
-
-<div class="section">
-
-<div class="section-title">
-
-Professional Summary
-
-<span class="badge">
-
-ATS Friendly
-
-</span>
-
-</div>
-
-<p
-
-id="summary"
-
-contenteditable="true">
-
-Write an impressive professional summary here.
-
-Mention your experience,
-
-skills,
-
-career objectives,
-
-and achievements.
-
-</p>
-
-<div
-class="character-counter">
-
-<span id="summaryCount">
-
-0
-
-</span>
-
-/500 Characters
-
-</div>
-
-</div>
-
-<!-- Continue in Part 3 --><!-- ===========================
-Experience Section
-=========================== -->
-
-<div class="section" id="experienceSection">
-
-    <div class="section-actions">
-        <button onclick="addExperience()">
-            <i class="fa-solid fa-plus"></i>
-        </button>
-
-        <button onclick="moveSectionUp(this)">
-            <i class="fa-solid fa-arrow-up"></i>
-        </button>
-
-        <button onclick="moveSectionDown(this)">
-            <i class="fa-solid fa-arrow-down"></i>
-        </button>
+    <div class="toolbar-group">
+        <div class="toolbar-title"><i class="fa-solid fa-file-signature"></i> CV Builder</div>
+        <button class="btn outline" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fa-solid fa-moon"></i></button>
     </div>
 
-    <div class="section-title">
-        Experience
+    <div class="toolbar-group">
+        <div class="control-wrapper">
+            <span class="control-label">Typography</span>
+            <select id="fontSelector" onchange="updateStyles()">
+                <option value="'Poppins', sans-serif">Poppins</option>
+                <option value="'Segoe UI', sans-serif">Segoe UI</option>
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="'Times New Roman', serif">Times New Roman</option>
+            </select>
+        </div>
+        <div class="control-wrapper">
+            <span class="control-label">Spacing</span>
+            <input type="range" id="spacingSlider" min="1.2" max="2.0" step="0.1" value="1.6" oninput="updateStyles()" style="width: 80px;">
+        </div>
+        <div class="control-wrapper">
+            <span class="control-label">Theme Color</span>
+            <input type="color" id="themeColor" value="#3b82f6" onchange="updateStyles()">
+        </div>
     </div>
 
-    <div class="card">
-
-        <button class="delete"
-            onclick="this.parentElement.remove();updateCompletion();">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-
-        <h3 contenteditable="true">
-            Senior Teacher
-        </h3>
-
-        <p contenteditable="true">
-            ABC International School
-        </p>
-
-        <small contenteditable="true">
-            June 2022 - Present
-        </small>
-
-        <ul contenteditable="true">
-
-            <li>
-                Managed classrooms of over 40 students.
-            </li>
-
-            <li>
-                Developed engaging lesson plans.
-            </li>
-
-            <li>
-                Improved student performance by 20%.
-            </li>
-
-        </ul>
-
+    <div class="toolbar-group">
+        <label class="btn dark">
+            <i class="fa-solid fa-camera"></i> Photo
+            <input type="file" accept="image/*" onchange="loadProfilePic(event)">
+        </label>
+        <button class="btn dark" onclick="addExperience()"><i class="fa-solid fa-briefcase"></i> + Exp</button>
+        <button class="btn dark" onclick="addEducation()"><i class="fa-solid fa-graduation-cap"></i> + Edu</button>
     </div>
 
+    <div class="toolbar-group">
+        <button class="btn green" onclick="saveResume()"><i class="fa-solid fa-floppy-disk"></i> Save Data</button>
+        <button class="btn blue" onclick="window.print()"><i class="fa-solid fa-print"></i> Clean Print PDF</button>
+    </div>
 </div>
 
-<!-- ===========================
-Education
-=========================== -->
+<div class="resume-wrapper">
+    <div class="resume" id="resume-content">
+        
+        <div class="sidebar">
+            <div class="photo-box" onclick="document.querySelector('input[type=file]').click()">
+                <img id="profileImage" src="https://placehold.co/300x300/1e293b/ffffff?text=Upload+Photo" alt="Profile">
+                <div class="photo-overlay"><i class="fa-solid fa-upload"></i></div>
+            </div>
 
-<div class="section" id="educationSection">
+            <h1 contenteditable="true" spellcheck="false">Pragya Mehta</h1>
+            <p class="job-title" contenteditable="true" spellcheck="false">IT Support Specialist / Web Developer</p>
 
-<div class="section-actions">
+            <div class="section">
+                <div class="section-title">Contact</div>
+                <div class="contact">
+                    <p><i class="fa-solid fa-phone"></i><span contenteditable="true">+91 00000 00000</span></p>
+                    <p><i class="fa-solid fa-envelope"></i><span contenteditable="true">email@example.com</span></p>
+                    <p><i class="fa-solid fa-location-dot"></i><span contenteditable="true">Vadodara, Gujarat, India</span></p>
+                    <p><i class="fa-brands fa-linkedin"></i><span contenteditable="true">linkedin.com/in/yourprofile</span></p>
+                    <p><i class="fa-brands fa-github"></i><span contenteditable="true">github.com/yourusername</span></p>
+                </div>
+            </div>
 
-<button onclick="addEducation()">
-<i class="fa-solid fa-plus"></i>
-</button>
+            <div class="section">
+                <div class="section-title">Technical Skills</div>
+                
+                <div class="skill">
+                    <div class="skill-name" contenteditable="true">Windows Server Administration <span style="font-size: 10px; opacity:0.6;">(Click bar to edit)</span></div>
+                    <div class="progress" onclick="setSkill(this)"><div style="width:85%"></div></div>
+                </div>
+                
+                <div class="skill">
+                    <div class="skill-name" contenteditable="true">Networking & Troubleshooting</div>
+                    <div class="progress" onclick="setSkill(this)"><div style="width:90%"></div></div>
+                </div>
 
+                <div class="skill">
+                    <div class="skill-name" contenteditable="true">HTML, CSS & JavaScript</div>
+                    <div class="progress" onclick="setSkill(this)"><div style="width:80%"></div></div>
+                </div>
+                
+                <div class="skill">
+                    <div class="skill-name" contenteditable="true">Hardware Configuration</div>
+                    <div class="progress" onclick="setSkill(this)"><div style="width:95%"></div></div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Languages</div>
+                <ul contenteditable="true" spellcheck="false" style="padding-left: 20px; font-weight: 300;">
+                    <li>English (Fluent)</li>
+                    <li>Hindi (Native)</li>
+                    <li>Gujarati (Native)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="section">
+                <div class="section-title">Professional Summary</div>
+                <p contenteditable="true" spellcheck="false" style="text-align: justify;">
+                    Detail-oriented IT professional currently pursuing a Bachelor of Computer Applications. Passionate about system administration, network security, and front-end web technologies. Adept at troubleshooting hardware and software issues, optimizing system performance, and developing intuitive web layouts. Seeking a dynamic remote role to leverage technical skills and drive operational excellence.
+                </p>
+            </div>
+
+            <div class="section" id="experienceContainer">
+                <div class="section-actions">
+                    <button class="btn-icon" onclick="addExperience()" title="Add Experience"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="section-title">Experience & Projects</div>
+                
+                <div class="card">
+                    <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 contenteditable="true" spellcheck="false">Customer Support Executive</h3>
+                    <p class="org" contenteditable="true" spellcheck="false">Maxicus | Vadodara</p>
+                    <small class="date" contenteditable="true" spellcheck="false">Recent</small>
+                    <ul contenteditable="true" spellcheck="false">
+                        <li>Resolved technical and customer service inquiries with a high satisfaction rate.</li>
+                        <li>Documented troubleshooting steps and managed ticketing workflows efficiently.</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 contenteditable="true" spellcheck="false">Freelance IT & Hardware Technician</h3>
+                    <p class="org" contenteditable="true" spellcheck="false">Independent Projects</p>
+                    <small class="date" contenteditable="true" spellcheck="false">2025 - Present</small>
+                    <ul contenteditable="true" spellcheck="false">
+                        <li>Diagnosed and repaired boot registry failures utilizing command-line tools and Hiren's BootCD PE.</li>
+                        <li>Configured and deployed Windows environments and automated ledger systems using HTML/CSS.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" id="educationContainer">
+                <div class="section-actions">
+                    <button class="btn-icon" onclick="addEducation()" title="Add Education"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div class="section-title">Education</div>
+                
+                <div class="card">
+                    <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 contenteditable="true" spellcheck="false">Bachelor of Computer Applications (Distance)</h3>
+                    <p class="org" contenteditable="true" spellcheck="false">University Name</p>
+                    <small class="date" contenteditable="true" spellcheck="false">Expected Graduation: YYYY</small>
+                    <ul contenteditable="true" spellcheck="false">
+                        <li>Coursework covering Cloud Computing, Web Technology, and Ethical Hacking.</li>
+                        <li>Participated in end-semester practical examinations for advanced web frameworks.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Certifications & Training</div>
+                <ul contenteditable="true" spellcheck="false" style="padding-left: 20px;">
+                    <li><strong>NPTEL Certification:</strong> Cloud Computing and Ethical Hacking (Ongoing)</li>
+                    <li><strong>NPTEL Certification:</strong> Introduction to Machine Learning</li>
+                    <li>CompTIA A+ and CCNA Preparation & Study</li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
 </div>
 
-<div class="section-title">
-
-Education
-
-</div>
-
-<div class="card">
-
-<button class="delete"
-onclick="this.parentElement.remove();updateCompletion();">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-<h3 contenteditable="true">
-
-Bachelor of Education
-
-</h3>
-
-<p contenteditable="true">
-
-The Social Sphere Jain PG College
-
-</p>
-
-<small contenteditable="true">
-
-2020 - 2022
-
-</small>
-
-<p contenteditable="true">
-
-CGPA : 8.5
-
-</p>
-
-</div>
-
-</div>
-
-<!-- ===========================
-Projects
-=========================== -->
-
-<div class="section"
-
-id="projectSection">
-
-<div class="section-actions">
-
-<button onclick="addProject()">
-
-<i class="fa-solid fa-plus"></i>
-
-</button>
-
-</div>
-
-<div class="section-title">
-
-Projects
-
-</div>
-
-<div class="card">
-
-<button class="delete"
-onclick="this.parentElement.remove();updateCompletion();">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-<h3 contenteditable="true">
-
-School Management Website
-
-</h3>
-
-<p contenteditable="true">
-
-Created an online school management
-system using HTML, CSS and JavaScript.
-
-</p>
-
-</div>
-
-</div>
-
-<!-- ===========================
-Certifications
-=========================== -->
-
-<div class="section">
-
-<div class="section-title">
-
-Certifications
-
-</div>
-
-<div class="card">
-
-<button class="delete"
-onclick="this.parentElement.remove();">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-<ul contenteditable="true">
-
-<li>Google Digital Marketing</li>
-
-<li>Microsoft Office Specialist</li>
-
-<li>Python Programming</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- ===========================
-Achievements
-=========================== -->
-
-<div class="section">
-
-<div class="section-title">
-
-Achievements
-
-</div>
-
-<div class="card">
-
-<button class="delete"
-onclick="this.parentElement.remove();">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-<ul contenteditable="true">
-
-<li>Best Teacher Award</li>
-
-<li>Organized Annual Science Fair</li>
-
-<li>100% Student Result</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<!-- ===========================
-References
-=========================== -->
-
-<div class="section">
-
-<div class="section-title">
-
-References
-
-</div>
-
-<div class="card">
-
-<button class="delete"
-onclick="this.parentElement.remove();">
-
-<i class="fa-solid fa-trash"></i>
-
-</button>
-
-<p contenteditable="true">
-
-Available upon request.
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ===========================
-Floating Buttons
-=========================== -->
-
-<div class="floating">
-
-<button onclick="window.print()"
-title="Print">
-
-<i class="fa-solid fa-print"></i>
-
-</button>
-
-<button onclick="saveResume()"
-title="Save">
-
-<i class="fa-solid fa-floppy-disk"></i>
-
-</button>
-
-<button onclick="toggleDarkMode()"
-title="Theme">
-
-<i class="fa-solid fa-moon"></i>
-
-</button>
-
-<button onclick="scrollTo({
-top:0,
-behavior:'smooth'
-})"
-title="Top">
-
-<i class="fa-solid fa-arrow-up"></i>
-
-</button>
-
-</div>
-
-<!-- ===========================
-Toast Notification
-=========================== -->
-
-<div class="toast"
-
-id="toast">
-
-Resume Saved Successfully
-
-</div>
-
-<script>/* ==========================================
-   Resume Builder Pro v3.0
-   Part 4A - Core Functions
-========================================== */
-
-// -------------------------
-// Global Variables
-// -------------------------
-
-const resume = document.getElementById("resume");
-const summary = document.getElementById("summary");
-const summaryCount = document.getElementById("summaryCount");
-const progressFill = document.getElementById("progressFill");
-const percentage = document.getElementById("percentage");
-const toast = document.getElementById("toast");
-
-const themePicker = document.getElementById("themeColor");
-const templateSelector = document.getElementById("templateSelector");
-const fontSelector = document.getElementById("fontSelector");
-const photoUpload = document.getElementById("photoUpload");
-const profileImage = document.getElementById("profileImage");
-
-// -------------------------
-// Toast Notification
-// -------------------------
-
-function showToast(message = "Saved Successfully") {
-
-    toast.innerHTML = message;
-
-    toast.style.display = "block";
-
-    setTimeout(() => {
-
-        toast.style.display = "none";
-
-    }, 2500);
-
+<div class="toast" id="toastBox">Action Successful</div>
+
+<script>
+// --- UI Styling & Core Setup ---
+function updateStyles() {
+    const font = document.getElementById('fontSelector').value;
+    const spacing = document.getElementById('spacingSlider').value;
+    const color = document.getElementById('themeColor').value;
+    
+    document.documentElement.style.setProperty('--font', font);
+    document.documentElement.style.setProperty('--line-height', spacing);
+    document.documentElement.style.setProperty('--accent', color);
 }
-
-// -------------------------
-// Save Resume
-// -------------------------
-
-function saveResume() {
-
-    localStorage.setItem(
-
-        "resumeBuilder",
-
-        resume.innerHTML
-
-    );
-
-    localStorage.setItem(
-
-        "resumeTheme",
-
-        document.documentElement.className
-
-    );
-
-    localStorage.setItem(
-
-        "resumeColor",
-
-        themePicker.value
-
-    );
-
-    localStorage.setItem(
-
-        "resumeFont",
-
-        fontSelector.value
-
-    );
-
-    localStorage.setItem(
-
-        "resumeTemplate",
-
-        templateSelector.value
-
-    );
-
-    showToast("Resume Saved");
-
-}
-
-// -------------------------
-// Load Resume
-// -------------------------
-
-function loadResume() {
-
-    const data = localStorage.getItem("resumeBuilder");
-
-    if (data) {
-
-        resume.innerHTML = data;
-
-    }
-
-    const theme = localStorage.getItem("resumeTheme");
-
-    if (theme) {
-
-        document.documentElement.className = theme;
-
-    }
-
-    const color = localStorage.getItem("resumeColor");
-
-    if (color) {
-
-        themePicker.value = color;
-
-        changeThemeColor();
-
-    }
-
-    const font = localStorage.getItem("resumeFont");
-
-    if (font) {
-
-        fontSelector.value = font;
-
-        changeFont();
-
-    }
-
-    const template = localStorage.getItem("resumeTemplate");
-
-    if (template) {
-
-        templateSelector.value = template;
-
-        changeTemplate();
-
-    }
-
-}
-
-// -------------------------
-// Clear Resume
-// -------------------------
-
-function clearResume() {
-
-    if (!confirm("Delete saved resume?"))
-        return;
-
-    localStorage.removeItem("resumeBuilder");
-
-    localStorage.removeItem("resumeTheme");
-
-    localStorage.removeItem("resumeColor");
-
-    localStorage.removeItem("resumeFont");
-
-    localStorage.removeItem("resumeTemplate");
-
-    location.reload();
-
-}
-
-// -------------------------
-// Auto Save
-// -------------------------
-
-setInterval(() => {
-
-    saveResume();
-
-}, 30000);
-
-// -------------------------
-// Save While Typing
-// -------------------------
-
-document.addEventListener("input", () => {
-
-    saveResume();
-
-    updateCompletion();
-
-});
-
-// -------------------------
-// Character Counter
-// -------------------------
-
-function updateCharacterCount() {
-
-    summaryCount.innerHTML = summary.innerText.length;
-
-}
-
-summary.addEventListener(
-
-    "input",
-
-    updateCharacterCount
-
-);
-
-updateCharacterCount();
-
-// -------------------------
-// Dark Mode
-// -------------------------
 
 function toggleDarkMode() {
-
-    document.documentElement.classList.toggle("dark");
-
-    saveResume();
-
+    document.body.classList.toggle('dark');
 }
 
-// -------------------------
-// Theme Color
-// -------------------------
-
-themePicker.addEventListener(
-
-    "input",
-
-    changeThemeColor
-
-);
-
-function changeThemeColor() {
-
-    document.documentElement.style.setProperty(
-
-        "--secondary",
-
-        themePicker.value
-
-    );
-
+function showToast(msg) {
+    const toast = document.getElementById('toastBox');
+    toast.innerText = msg;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2500);
 }
 
-// -------------------------
-// Font Changer
-// -------------------------
-
-fontSelector.addEventListener(
-
-    "change",
-
-    changeFont
-
-);
-
-function changeFont() {
-
-    document.documentElement.style.setProperty(
-
-        "--font",
-
-        fontSelector.value
-
-    );
-
-}
-
-// -------------------------
-// Resume Template
-// -------------------------
-
-templateSelector.addEventListener(
-
-    "change",
-
-    changeTemplate
-
-);
-
-function changeTemplate() {
-
-    resume.className = "resume " +
-
-        templateSelector.value;
-
-}
-
-// -------------------------
-// Profile Picture Upload
-// -------------------------
-
-photoUpload.addEventListener(
-
-    "change",
-
-    function (event) {
-
-        const file = event.target.files[0];
-
-        if (!file)
-            return;
-
+// --- Image Handling ---
+function loadProfilePic(event) {
+    const file = event.target.files[0];
+    if (file) {
         const reader = new FileReader();
-
-        reader.onload = function (e) {
-
-            profileImage.src = e.target.result;
-
-            saveResume();
-
+        reader.onload = function(e) {
+            document.getElementById('profileImage').src = e.target.result;
+            showToast("Photo Updated!");
         };
-
         reader.readAsDataURL(file);
-
     }
-
-);
-
-// -------------------------
-// Completion Meter
-// -------------------------
-
-function updateCompletion() {
-
-    let score = 0;
-
-    const editable = document.querySelectorAll("[contenteditable]");
-
-    editable.forEach(item => {
-
-        if (item.innerText.trim() !== "") {
-
-            score++;
-
-        }
-
-    });
-
-    let percent = Math.round(
-
-        score / editable.length * 100
-
-    );
-
-    progressFill.style.width = percent + "%";
-
-    percentage.innerHTML = percent + "%";
-
 }
 
-// -------------------------
-// Initialize
-// -------------------------
-
-window.onload = () => {
-
-    loadResume();
-
-    updateCharacterCount();
-
-    updateCompletion();
-
-};/* ==========================================
-   Resume Builder Pro v3.0
-   Part 4B - Dynamic Sections & Editing
-==========================================*/
-
-// -------------------------
-// Add Experience
-// -------------------------
-
+// --- Dynamic Block Adders ---
 function addExperience() {
-
-    const section = document.getElementById("experienceSection");
-
-    const card = document.createElement("div");
-
-    card.className = "card";
-
-    card.innerHTML = `
-
-        <button class="delete"
-        onclick="deleteCard(this)">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-
-        <h3 contenteditable="true">
-            New Job Title
-        </h3>
-
-        <p contenteditable="true">
-            Company Name
-        </p>
-
-        <small contenteditable="true">
-            Jan 2024 - Present
-        </small>
-
+    const container = document.getElementById('experienceContainer');
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+        <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
+        <h3 contenteditable="true">Job Title</h3>
+        <p class="org" contenteditable="true">Company Name | Location</p>
+        <small class="date" contenteditable="true">Month, Year - Present</small>
         <ul contenteditable="true">
-
-            <li>Describe your achievement here.</li>
-
-            <li>Press Enter to add more points.</li>
-
+            <li>Describe your responsibilities and impact.</li>
+            <li>Press Enter to add more bullet points.</li>
         </ul>
-
     `;
-
-    section.appendChild(card);
-
-    updateCompletion();
-
-    saveResume();
-
-    showToast("Experience Added");
-
+    container.appendChild(div);
 }
-
-// -------------------------
-// Add Education
-// -------------------------
 
 function addEducation() {
-
-    const section = document.getElementById("educationSection");
-
-    const card = document.createElement("div");
-
-    card.className = "card";
-
-    card.innerHTML = `
-
-        <button class="delete"
-        onclick="deleteCard(this)">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-
-        <h3 contenteditable="true">
-            Degree Name
-        </h3>
-
-        <p contenteditable="true">
-            University Name
-        </p>
-
-        <small contenteditable="true">
-            2024
-        </small>
-
-        <p contenteditable="true">
-            CGPA / Percentage
-        </p>
-
+    const container = document.getElementById('educationContainer');
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+        <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
+        <h3 contenteditable="true">Degree / Certification</h3>
+        <p class="org" contenteditable="true">Institution Name</p>
+        <small class="date" contenteditable="true">Graduation Year</small>
+        <ul contenteditable="true">
+            <li>Additional detail or GPA (Optional).</li>
+        </ul>
     `;
-
-    section.appendChild(card);
-
-    updateCompletion();
-
-    saveResume();
-
-    showToast("Education Added");
-
+    container.appendChild(div);
 }
 
-// -------------------------
-// Add Project
-// -------------------------
-
-function addProject() {
-
-    const section = document.getElementById("projectSection");
-
-    const card = document.createElement("div");
-
-    card.className = "card";
-
-    card.innerHTML = `
-
-        <button class="delete"
-        onclick="deleteCard(this)">
-            <i class="fa-solid fa-trash"></i>
-        </button>
-
-        <h3 contenteditable="true">
-            Project Title
-        </h3>
-
-        <p contenteditable="true">
-            Project Description
-        </p>
-
-    `;
-
-    section.appendChild(card);
-
-    updateCompletion();
-
-    saveResume();
-
-    showToast("Project Added");
-
-}
-
-// -------------------------
-// Delete Card
-// -------------------------
-
-function deleteCard(button){
-
-    if(!confirm("Delete this section?")) return;
-
-    button.parentElement.remove();
-
-    updateCompletion();
-
-    saveResume();
-
-    showToast("Section Deleted");
-
-}
-
-// -------------------------
-// Duplicate Card
-// -------------------------
-
-function duplicateCard(button){
-
-    const card = button.parentElement;
-
-    const copy = card.cloneNode(true);
-
-    card.parentElement.insertBefore(copy, card.nextSibling);
-
-    updateCompletion();
-
-    saveResume();
-
-    showToast("Section Duplicated");
-
-}
-
-// -------------------------
-// Move Section Up
-// -------------------------
-
-function moveSectionUp(btn){
-
-    const section = btn.closest(".section");
-
-    const previous = section.previousElementSibling;
-
-    if(previous){
-
-        section.parentNode.insertBefore(section, previous);
-
-        showToast("Moved Up");
-
-        saveResume();
-
+// --- Skill Bar Adjuster ---
+function setSkill(element) {
+    let val = prompt("Enter skill percentage (0-100):", "80");
+    if (val !== null && !isNaN(val) && val >= 0 && val <= 100) {
+        element.firstElementChild.style.width = val + "%";
     }
-
 }
 
-// -------------------------
-// Move Section Down
-// -------------------------
-
-function moveSectionDown(btn){
-
-    const section = btn.closest(".section");
-
-    const next = section.nextElementSibling;
-
-    if(next){
-
-        section.parentNode.insertBefore(next, section);
-
-        showToast("Moved Down");
-
-        saveResume();
-
-    }
-
+// --- Local Storage Save/Load ---
+function saveResume() {
+    const content = document.getElementById('resume-content').innerHTML;
+    localStorage.setItem('savedResumeV4', content);
+    showToast("Resume Saved Locally!");
 }
 
-// -------------------------
-// Enable HTML5 Drag & Drop
-// -------------------------
-
-const draggableSections =
-document.querySelectorAll(".main .section");
-
-draggableSections.forEach(section=>{
-
-    section.setAttribute("draggable","true");
-
-    section.addEventListener("dragstart",dragStart);
-
-    section.addEventListener("dragover",dragOver);
-
-    section.addEventListener("drop",dropSection);
-
-});
-
-let draggedSection=null;
-
-function dragStart(){
-
-    draggedSection=this;
-
-}
-
-function dragOver(e){
-
-    e.preventDefault();
-
-}
-
-function dropSection(e){
-
-    e.preventDefault();
-
-    if(this!==draggedSection){
-
-        this.parentNode.insertBefore(
-            draggedSection,
-            this
-        );
-
-        saveResume();
-
-        showToast("Section Reordered");
-
-    }
-
-}
-
-// -------------------------
-// Editable Skill Progress
-// -------------------------
-
-document.querySelectorAll(".progress div")
-
-.forEach(bar=>{
-
-    bar.addEventListener("click",function(){
-
-        let value=prompt(
-            "Skill Percentage (0-100)",
-            this.style.width.replace("%","")
-        );
-
-        if(value===null) return;
-
-        value=parseInt(value);
-
-        if(isNaN(value)) return;
-
-        if(value<0) value=0;
-
-        if(value>100) value=100;
-
-        this.style.width=value+"%";
-
-        saveResume();
-
-        showToast("Skill Updated");
-
-    });
-
-});
-
-// -------------------------
-// Highlight Editable Area
-// -------------------------
-
-document.querySelectorAll("[contenteditable]")
-
-.forEach(item=>{
-
-    item.addEventListener("focus",()=>{
-
-        item.style.background="#fff7cc";
-
-    });
-
-    item.addEventListener("blur",()=>{
-
-        item.style.background="";
-
-        saveResume();
-
-    });
-
-});
-
-// -------------------------
-// Auto Update Completion
-// -------------------------
-
-setInterval(updateCompletion,5000);/* ==========================================
-   Resume Builder Pro v3.0
-   Part 4C - Export, Import, Shortcuts
-========================================== */
-
-// -------------------------
-// Export Resume as JSON
-// -------------------------
-
-function exportJSON() {
-
-    const data = {
-        html: resume.innerHTML,
-        theme: document.documentElement.className,
-        color: themePicker.value,
-        font: fontSelector.value,
-        template: templateSelector.value
-    };
-
-    const blob = new Blob(
-        [JSON.stringify(data, null, 2)],
-        { type: "application/json" }
-    );
-
-    const link = document.createElement("a");
-
-    link.href = URL.createObjectURL(blob);
-
-    link.download = "resume.json";
-
-    link.click();
-
-    showToast("Resume Exported");
-
-}
-
-// -------------------------
-// Import Resume
-// -------------------------
-
-function importJSON(file){
-
-    const reader = new FileReader();
-
-    reader.onload = function(e){
-
-        try{
-
-            const data = JSON.parse(e.target.result);
-
-            resume.innerHTML = data.html || "";
-
-            if(data.theme)
-                document.documentElement.className=data.theme;
-
-            if(data.color){
-
-                themePicker.value=data.color;
-                changeThemeColor();
-
-            }
-
-            if(data.font){
-
-                fontSelector.value=data.font;
-                changeFont();
-
-            }
-
-            if(data.template){
-
-                templateSelector.value=data.template;
-                changeTemplate();
-
-            }
-
-            saveResume();
-
-            showToast("Resume Imported");
-
+window.onload = function() {
+    const saved = localStorage.getItem('savedResumeV4');
+    if (saved) {
+        if(confirm("Found a previously saved resume. Would you like to load it?")) {
+            document.getElementById('resume-content').innerHTML = saved;
         }
-
-        catch{
-
-            alert("Invalid JSON File");
-
-        }
-
-    };
-
-    reader.readAsText(file);
-
-}
-
-// -------------------------
-// Undo / Redo
-// -------------------------
-
-let historyStack=[];
-let historyIndex=-1;
-
-function saveHistory(){
-
-    historyStack=historyStack.slice(0,historyIndex+1);
-
-    historyStack.push(resume.innerHTML);
-
-    historyIndex++;
-
-}
-
-function undo(){
-
-    if(historyIndex>0){
-
-        historyIndex--;
-
-        resume.innerHTML=historyStack[historyIndex];
-
-        showToast("Undo");
-
     }
-
-}
-
-function redo(){
-
-    if(historyIndex<historyStack.length-1){
-
-        historyIndex++;
-
-        resume.innerHTML=historyStack[historyIndex];
-
-        showToast("Redo");
-
-    }
-
-}
-
-document.addEventListener("input",saveHistory);
-
-saveHistory();
-
-// -------------------------
-// Keyboard Shortcuts
-// -------------------------
-
-document.addEventListener("keydown",function(e){
-
-    if(e.ctrlKey && e.key==="s"){
-
-        e.preventDefault();
-
-        saveResume();
-
-    }
-
-    if(e.ctrlKey && e.key==="p"){
-
-        e.preventDefault();
-
-        window.print();
-
-    }
-
-    if(e.ctrlKey && e.key==="e"){
-
-        e.preventDefault();
-
-        exportJSON();
-
-    }
-
-    if(e.ctrlKey && e.key==="z"){
-
-        e.preventDefault();
-
-        undo();
-
-    }
-
-    if(e.ctrlKey && e.key==="y"){
-
-        e.preventDefault();
-
-        redo();
-
-    }
-
-});
-
-// -------------------------
-// Auto Save Before Exit
-// -------------------------
-
-window.addEventListener("beforeunload",saveResume);
-
-// -------------------------
-// Theme Persistence
-// -------------------------
-
-window.matchMedia("(prefers-color-scheme: dark)")
-.addEventListener("change",e=>{
-
-    if(localStorage.getItem("resumeTheme")==null){
-
-        if(e.matches){
-
-            document.documentElement.classList.add("dark");
-
-        }
-
-    }
-
-});
-
-// -------------------------
-// Initialize
-// -------------------------
-
-window.addEventListener("load",()=>{
-
-    loadResume();
-
-    updateCharacterCount();
-
-    updateCompletion();
-
-    saveHistory();
-
-});
-
-// -------------------------
-// Console Welcome
-// -------------------------
-
-console.log("%cResume Builder Pro v3.0",
-"color:#2563eb;font-size:22px;font-weight:bold");
-
-console.log("Developed with HTML, CSS & JavaScript");
-
-/* ==========================================
-   End of Script
-========================================== */
-
+    updateStyles(); // Initialize default styles
+};
 </script>
 
 </body>
-
 </html>
