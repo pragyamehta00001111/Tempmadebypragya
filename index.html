@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aura CV - Premium Workspace</title>
 
+<!-- Modern Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- PDF Export Engine -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
@@ -91,15 +94,60 @@ body {
 .btn-primary { background: var(--cv-accent); color: white; border: none; }
 .btn-primary:hover { filter: brightness(1.1); color: white; }
 .btn-export { background: #0f172a; color: white; border: none; }
-.btn-export:hover { background: #000; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); }
+.btn-export:hover { background: #000; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); color: white; }
 
-select, input[type=color], input[type=range] {
+/* The Donate Button styling */
+.btn-donate { background: #10b981; color: white; border: none; font-weight: 700; }
+.btn-donate:hover { background: #059669; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transform: translateY(-2px); }
+
+select, input[type=color], input[type=range], input[type=number] {
     appearance: none; background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 10px; border-radius: 6px;
     font-size: 13px; font-weight: 500; cursor: pointer; color: #334155; outline: none;
 }
-.dark-mode select { background: #1e293b; border-color: #334155; color: #e2e8f0; }
+.dark-mode select, .dark-mode input[type=number] { background: #1e293b; border-color: #334155; color: #e2e8f0; }
 input[type=color] { padding: 0; width: 32px; height: 32px; border: none; border-radius: 4px; overflow: hidden; }
 input[type="file"] { display: none; }
+
+/* =========================================
+   Donation / Support Modal UI
+   ========================================= */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 10000;
+    display: flex; justify-content: center; align-items: center; backdrop-filter: blur(8px);
+    opacity: 0; visibility: hidden; transition: all 0.3s ease;
+}
+.modal-overlay.show { opacity: 1; visibility: visible; }
+.modal {
+    background: var(--cv-bg); border-radius: 16px; width: 90%; max-width: 400px;
+    padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); text-align: center; position: relative;
+    transform: translateY(20px); transition: transform 0.3s ease;
+}
+.modal-overlay.show .modal { transform: translateY(0); }
+.close-modal { 
+    position: absolute; top: 15px; right: 15px; border: none; background: #f1f5f9; 
+    width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; color: #64748b; transition: 0.2s;
+}
+.close-modal:hover { background: #e2e8f0; color: #0f172a; }
+.modal h2 { margin-bottom: 8px; color: var(--cv-primary); font-family: var(--cv-font); font-size: 1.5rem; }
+.modal p { font-size: 14px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
+
+.donation-presets { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
+.preset-btn { 
+    background: transparent; border: 1.5px solid #e2e8f0; color: #64748b; 
+    padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; font-size: 14px;
+}
+.preset-btn.active, .preset-btn:hover { border-color: var(--cv-accent); color: var(--cv-accent); background: rgba(37, 99, 235, 0.05); }
+
+.custom-amount-wrapper { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 24px; }
+.custom-amount-wrapper span { font-size: 18px; font-weight: 600; color: #64748b; }
+.custom-amount-wrapper input { width: 100px; font-size: 18px; text-align: center; font-weight: 700; padding: 8px; border-color: #cbd5e1; }
+.custom-amount-wrapper input:focus { border-color: var(--cv-accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+.qr-box { 
+    margin: 20px auto 0 auto; display: none; background: #f8fafc; padding: 20px; 
+    border-radius: 12px; width: 200px; height: 200px; border: 1px solid #e2e8f0; 
+}
+.qr-box img { width: 100%; height: 100%; border-radius: 4px; }
 
 /* =========================================
    Resume Template Configuration
@@ -203,7 +251,7 @@ input[type="file"] { display: none; }
 @media print {
     @page { size: A4; margin: 0; }
     body { background: white !important; padding: 0 !important; min-height: 0; }
-    .app-toolbar, .hover-actions, .photo-overlay, .keyboard-hint { display: none !important; }
+    .app-toolbar, .hover-actions, .photo-overlay, .keyboard-hint, .modal-overlay { display: none !important; }
     .workspace { padding: 0; display: block; }
     .cv-page { box-shadow: none !important; border-radius: 0; }
     [contenteditable="true"] { padding: 0 !important; margin: 0 !important; border: none !important; background: transparent !important; }
@@ -218,6 +266,7 @@ input[type="file"] { display: none; }
 </head>
 <body>
 
+<!-- High-End Glass Toolbar -->
 <div class="app-toolbar">
     <div class="tool-group">
         <div class="logo-brand"><i class="fa-solid fa-wand-magic-sparkles"></i> Aura CV</div>
@@ -247,6 +296,9 @@ input[type="file"] { display: none; }
     </div>
 
     <div class="tool-group">
+        <!-- New Donate Button (Distinct Color) -->
+        <button class="btn btn-donate" onclick="toggleDonationModal(true)"><i class="fa-solid fa-mug-hot"></i> Donate</button>
+        <div class="tool-divider"></div>
         <button class="btn" onclick="resetWorkspace()" title="Reset All"><i class="fa-solid fa-rotate-right"></i></button>
         <button class="btn btn-primary" onclick="saveWorkspace()"><i class="fa-solid fa-cloud-arrow-up"></i> Save</button>
         <button class="btn btn-export" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
@@ -257,9 +309,40 @@ input[type="file"] { display: none; }
     <i class="fa-solid fa-keyboard"></i> Pro Tip: Select text and press <strong>Ctrl+B</strong> (Bold), <strong>Ctrl+I</strong> (Italic), or <strong>Ctrl+U</strong> (Underline). Hover over items to Move or Delete them.
 </div>
 
+<!-- Donation / Support Modal -->
+<div class="modal-overlay" id="donationOverlay">
+    <div class="modal">
+        <button class="close-modal" onclick="toggleDonationModal(false)"><i class="fa-solid fa-xmark"></i></button>
+        <h2>Support Aura CV 💙</h2>
+        <p>If this app helped you build a perfect, ATS-friendly resume, consider leaving a small tip to keep the servers running.</p>
+        
+        <div class="donation-presets">
+            <button class="preset-btn active" onclick="setDonationAmount(100, this)">₹100</button>
+            <button class="preset-btn" onclick="setDonationAmount(250, this)">₹250</button>
+            <button class="preset-btn" onclick="setDonationAmount(500, this)">₹500</button>
+        </div>
+
+        <div class="custom-amount-wrapper">
+            <span>₹</span>
+            <input type="number" id="donationAmount" value="100" min="10" oninput="clearActivePresets()">
+        </div>
+
+        <button class="btn btn-primary" style="width:100%; justify-content:center; padding: 12px; font-size: 15px;" onclick="generateDonationQR()">
+            <i class="fa-solid fa-qrcode"></i> Generate Payment QR
+        </button>
+
+        <div class="qr-box" id="qrContainer">
+            <img id="qrImage" src="" alt="Scan to Pay">
+            <p style="font-size:11px; color:#64748b; margin-top:8px; font-weight: 500;">Scan using GPay, PhonePe, or Paytm</p>
+        </div>
+    </div>
+</div>
+
+<!-- Main Workspace A4 Page -->
 <div class="workspace">
     <div class="cv-page" id="cv-document">
         
+        <!-- Sidebar -->
         <div class="cv-sidebar">
             <div class="cv-photo-wrapper" onclick="document.querySelector('input[type=file]').click()">
                 <img id="cvPhoto" src="https://placehold.co/400x400/e2e8f0/64748b?text=Upload\nPhoto" alt="Profile">
@@ -324,6 +407,7 @@ input[type="file"] { display: none; }
 
         </div>
 
+        <!-- Main Body -->
         <div class="cv-main" id="cvMainContent">
             
             <div>
@@ -338,6 +422,7 @@ input[type="file"] { display: none; }
                 </p>
             </div>
 
+            <!-- Draggable Experience Section -->
             <div class="cv-section">
                 <div class="hover-actions" style="top: 0; right: 0;">
                     <button class="action-icon" onclick="addExperience()" title="Add Experience"><i class="fa-solid fa-plus"></i></button>
@@ -363,6 +448,7 @@ input[type="file"] { display: none; }
                 </div>
             </div>
 
+            <!-- Draggable Education Section -->
             <div class="cv-section">
                 <div class="hover-actions" style="top: 0; right: 0;">
                     <button class="action-icon" onclick="addEducation()" title="Add Education"><i class="fa-solid fa-plus"></i></button>
@@ -387,6 +473,7 @@ input[type="file"] { display: none; }
                 </div>
             </div>
 
+            <!-- Declaration -->
             <div class="cv-section" id="declContainer">
                 <div class="hover-actions" style="top: 0; right: 0;">
                     <button class="action-icon danger" onclick="this.parentElement.parentElement.remove()" title="Remove Declaration"><i class="fa-solid fa-trash"></i></button>
@@ -424,6 +511,46 @@ function uploadImage(e) {
         reader.readAsDataURL(file);
     }
 }
+
+// --- Donation Modal Logic ---
+function toggleDonationModal(show) {
+    const overlay = document.getElementById('donationOverlay');
+    if (show) {
+        overlay.classList.add('show');
+    } else {
+        overlay.classList.remove('show');
+        document.getElementById('qrContainer').style.display = 'none'; // reset QR
+    }
+}
+
+function setDonationAmount(amt, btn) {
+    document.getElementById('donationAmount').value = amt;
+    clearActivePresets();
+    btn.classList.add('active');
+}
+
+function clearActivePresets() {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+}
+
+function generateDonationQR() {
+    const val = document.getElementById('donationAmount').value;
+    if (!val || val < 10) { alert("Please enter a valid amount (Minimum ₹10)."); return; }
+    
+    // Setup UPI Intent
+    const upiId = "8320548305@okbizaxis"; 
+    const merchantName = "Aura CV Builder";
+    const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(merchantName)}&am=${val}&cu=INR`;
+    
+    // Fetch QR Code from API
+    document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiString)}`;
+    document.getElementById('qrContainer').style.display = 'block';
+}
+
+// Close Modal when clicking outside the box
+document.getElementById('donationOverlay').addEventListener('click', function(e) {
+    if(e.target === this) toggleDonationModal(false);
+});
 
 // --- Dynamic Block Generators ---
 function addExperience() {
@@ -519,16 +646,14 @@ function exportPDF() {
     
     const element = document.getElementById('cv-document');
     
-    // Enterprise configuration for crystal clear text
     const opt = {
         margin:       0,
-        filename:     'Pragya_Mehta_Resume.pdf',
+        filename:     'Professional_Resume.pdf',
         image:        { type: 'jpeg', quality: 1 },
         html2canvas:  { scale: 3, useCORS: true, logging: false }, 
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     
-    // Hide UI elements during render
     const hovers = document.querySelectorAll('.hover-actions, .photo-overlay');
     hovers.forEach(el => el.style.display = 'none');
     
