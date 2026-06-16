@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aura CV - Premium Workspace</title>
+<title>Aura CV - Premium Workspace (Mobile Optimized)</title>
 
 <!-- Modern Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,7 +85,7 @@ body {
     background: #ffffff; color: #475569; border: 1px solid #e2e8f0;
     padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600;
     cursor: pointer; display: flex; align-items: center; gap: 6px;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease; white-space: nowrap;
 }
 .dark-mode .btn { background: #1e293b; color: #cbd5e1; border-color: #334155; }
 .btn:hover { background: #f1f5f9; transform: translateY(-1px); }
@@ -95,8 +95,6 @@ body {
 .btn-primary:hover { filter: brightness(1.1); color: white; }
 .btn-export { background: #0f172a; color: white; border: none; }
 .btn-export:hover { background: #000; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.3); color: white; }
-
-/* The Donate Button styling */
 .btn-donate { background: #10b981; color: white; border: none; font-weight: 700; }
 .btn-donate:hover { background: #059669; color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transform: translateY(-2px); }
 
@@ -223,8 +221,7 @@ input[type="file"] { display: none; }
     border: 1px solid transparent; transition: all 0.2s ease;
 }
 [contenteditable="true"]:hover, [contenteditable="true"]:focus { 
-    background: rgba(37, 99, 235, 0.04); 
-    border-color: rgba(37, 99, 235, 0.3);
+    background: rgba(37, 99, 235, 0.04); border-color: rgba(37, 99, 235, 0.3);
 }
 
 /* Smart Hover Controls (Move & Delete) */
@@ -241,12 +238,48 @@ input[type="file"] { display: none; }
 .action-icon.danger:hover { background: #fef2f2; color: #ef4444; border-color: #fca5a5; }
 
 .cv-section { position: relative; }
-
-/* Hint Banner */
 .keyboard-hint { text-align: center; font-size: 12px; color: #64748b; margin-top: 15px; font-weight: 500; }
 
 /* =========================================
-   Print & PDF Configuration
+   MOBILE RESPONSIVE OPTIMIZATION
+   ========================================= */
+@media (max-width: 900px) {
+    body { padding-top: 160px; }
+    .app-toolbar { 
+        flex-wrap: wrap; justify-content: center; 
+        width: 100%; top: 0; border-radius: 0; padding: 10px; gap: 10px; 
+    }
+    .tool-group { flex-wrap: wrap; justify-content: center; }
+    .logo-brand { width: 100%; justify-content: center; margin-bottom: 5px; }
+    .tool-divider { display: none; }
+    
+    .workspace { padding: 10px; }
+    .cv-page { width: 100%; min-height: auto; flex-direction: column; border-radius: 8px; }
+    .cv-page.swapped { flex-direction: column; } 
+    
+    .cv-sidebar { width: 100%; padding: 30px 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
+    .cv-main { width: 100%; padding: 30px 20px; }
+
+    /* Touch Friendly Controls */
+    .hover-actions { 
+        opacity: 1; transform: translateY(0); 
+        position: relative; right: auto; top: auto; 
+        justify-content: flex-end; margin-bottom: 5px; 
+    }
+    .cv-card:hover { background: transparent; }
+    .action-icon { width: 34px; height: 34px; font-size: 14px; } /* Bigger targets for tapping */
+    .keyboard-hint { display: none; }
+}
+
+@media (max-width: 500px) {
+    .btn span { display: none; } /* Hide text on small screens, keep icons */
+    .btn-primary span, .btn-export span { display: inline; } /* Keep main action texts */
+    .app-toolbar { padding: 10px 5px; }
+    .btn { padding: 10px; justify-content: center; }
+}
+
+/* =========================================
+   Print & PDF Configuration (Forces Desktop Layout)
    ========================================= */
 @media print {
     @page { size: A4; margin: 0; }
@@ -262,6 +295,16 @@ input[type="file"] { display: none; }
     .cv-sidebar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .skill-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; border-color: #cbd5e1 !important; }
 }
+
+/* 
+   Forcing PDF Layout: When the PDF runs, we add the .exporting class 
+   to override the mobile view and force the perfect A4 dimensions. 
+*/
+.cv-page.exporting { width: 210mm !important; min-height: 297mm !important; flex-direction: row !important; }
+.cv-page.exporting.swapped { flex-direction: row-reverse !important; }
+.cv-page.exporting .cv-sidebar { width: 33% !important; padding: 40px 30px !important; border-right: 1px solid #e2e8f0 !important; border-bottom: none !important; }
+.cv-page.exporting .cv-main { width: 67% !important; padding: 40px 40px !important; }
+.cv-page.exporting .hover-actions { display: none !important; }
 </style>
 </head>
 <body>
@@ -271,8 +314,8 @@ input[type="file"] { display: none; }
     <div class="tool-group">
         <div class="logo-brand"><i class="fa-solid fa-wand-magic-sparkles"></i> Aura CV</div>
         <div class="tool-divider"></div>
-        <button class="btn" onclick="toggleLayout()" title="Swap Columns"><i class="fa-solid fa-left-right"></i> Swap</button>
-        <button class="btn" onclick="document.body.classList.toggle('dark-mode')" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
+        <button class="btn" onclick="toggleLayout()" title="Swap Columns"><i class="fa-solid fa-left-right"></i> <span>Swap</span></button>
+        <button class="btn" onclick="document.body.classList.toggle('dark-mode')" title="Dark Mode"><i class="fa-solid fa-moon"></i> <span>Theme</span></button>
     </div>
 
     <div class="tool-group">
@@ -282,26 +325,25 @@ input[type="file"] { display: none; }
             <option value="'Playfair Display', serif">Classic (Playfair)</option>
         </select>
         
-        <input type="range" id="spacingSlider" min="1.4" max="2.0" step="0.1" value="1.6" oninput="updateTheme()" title="Line Spacing" style="width: 80px;">
+        <input type="range" id="spacingSlider" min="1.4" max="2.0" step="0.1" value="1.6" oninput="updateTheme()" title="Line Spacing">
         <input type="color" id="colorSelect" value="#2563eb" onchange="updateTheme()" title="Accent Color">
         
         <div class="tool-divider"></div>
         <label class="btn">
-            <i class="fa-solid fa-image"></i> Photo
+            <i class="fa-solid fa-image"></i> <span>Photo</span>
             <input type="file" accept="image/*" onchange="uploadImage(event)">
         </label>
-        <button class="btn" onclick="addExperience()"><i class="fa-solid fa-briefcase"></i> + Exp</button>
-        <button class="btn" onclick="addEducation()"><i class="fa-solid fa-graduation-cap"></i> + Edu</button>
-        <button class="btn" onclick="addCustomSection()"><i class="fa-solid fa-layer-group"></i> + Section</button>
+        <button class="btn" onclick="addExperience()"><i class="fa-solid fa-briefcase"></i> <span>+ Exp</span></button>
+        <button class="btn" onclick="addEducation()"><i class="fa-solid fa-graduation-cap"></i> <span>+ Edu</span></button>
+        <button class="btn" onclick="addCustomSection()"><i class="fa-solid fa-layer-group"></i> <span>+ Section</span></button>
     </div>
 
     <div class="tool-group">
-        <!-- New Donate Button (Distinct Color) -->
-        <button class="btn btn-donate" onclick="toggleDonationModal(true)"><i class="fa-solid fa-mug-hot"></i> Donate</button>
+        <button class="btn btn-donate" onclick="toggleDonationModal(true)"><i class="fa-solid fa-mug-hot"></i> <span>Donate</span></button>
         <div class="tool-divider"></div>
         <button class="btn" onclick="resetWorkspace()" title="Reset All"><i class="fa-solid fa-rotate-right"></i></button>
-        <button class="btn btn-primary" onclick="saveWorkspace()"><i class="fa-solid fa-cloud-arrow-up"></i> Save</button>
-        <button class="btn btn-export" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+        <button class="btn btn-primary" onclick="saveWorkspace()"><i class="fa-solid fa-cloud-arrow-up"></i> <span>Save</span></button>
+        <button class="btn btn-export" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> <span>Export PDF</span></button>
     </div>
 </div>
 
@@ -519,7 +561,7 @@ function toggleDonationModal(show) {
         overlay.classList.add('show');
     } else {
         overlay.classList.remove('show');
-        document.getElementById('qrContainer').style.display = 'none'; // reset QR
+        document.getElementById('qrContainer').style.display = 'none'; 
     }
 }
 
@@ -641,10 +683,14 @@ function moveDown(btn) {
 
 // --- High-End Data & PDF Export ---
 function exportPDF() {
-    const btn = document.querySelector('.btn-export');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Rendering...';
+    const btn = document.querySelector('.btn-export span');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = 'Rendering...';
     
     const element = document.getElementById('cv-document');
+    
+    // Temporarily force A4 layout class for PDF export (Ignores mobile layout)
+    element.classList.add('exporting');
     
     const opt = {
         margin:       0,
@@ -654,12 +700,9 @@ function exportPDF() {
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
     
-    const hovers = document.querySelectorAll('.hover-actions, .photo-overlay');
-    hovers.forEach(el => el.style.display = 'none');
-    
     html2pdf().set(opt).from(element).save().then(() => {
-        hovers.forEach(el => el.style.display = '');
-        btn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Export PDF';
+        element.classList.remove('exporting');
+        btn.innerHTML = originalText;
     });
 }
 
