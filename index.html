@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Resume Builder - Clean Print Edition</title>
+<title>Pro Resume Builder - Support & Print Edition</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -61,135 +61,102 @@ body { background: var(--background); padding: 100px 30px 40px; transition: back
 .btn.green { background: #16a34a; }
 .btn.blue { background: #2563eb; }
 .btn.dark { background: #334155; }
+.btn.gold { background: #ea580c; font-weight: 600; }
 .btn.outline { background: transparent; border: 1px solid #ccc; color: var(--text); }
 
-select, input[type=color], input[type=range] { 
-    padding: 6px; border-radius: 6px; border: 1px solid #ccc; background: var(--white); color: var(--text); cursor: pointer;
+select, input[type=color], input[type=range], input[type=text], input[type=number] { 
+    padding: 6px; border-radius: 6px; border: 1px solid #ccc; background: var(--white); color: var(--text);
 }
 label.btn { display: flex; align-items: center; gap: 6px; }
 input[type="file"] { display: none; }
 
-/* Control Labels */
 .control-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: #666; margin-bottom: 2px; display: block;}
 .control-wrapper { display: flex; flex-direction: column; }
 
 /* =========================================
-   Resume Paper Layout
+   Donation / Payment Modal UI
    ========================================= */
-.resume-wrapper {
-    width: 210mm; /* Strict A4 width */
-    margin: auto;
-    background: var(--white);
-    box-shadow: var(--shadow);
-    min-height: 297mm; /* Strict A4 height */
-    position: relative;
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000;
+    display: none; justify-content: center; align-items: center; backdrop-filter: blur(4px);
 }
-
-.resume {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    min-height: inherit;
-    font-size: var(--base-font-size);
-    line-height: var(--line-height);
+.modal {
+    background: var(--white); border-radius: 12px; width: 90%; max-width: 420px;
+    padding: 25px; box-shadow: var(--shadow); text-align: center; position: relative;
 }
+.close-modal { position: absolute; top: 15px; right: 15px; border: none; background: transparent; font-size: 20px; cursor: pointer; color: var(--text); }
+.modal h2 { margin-bottom: 10px; color: var(--primary); }
+.modal p { font-size: 13px; color: #555; margin-bottom: 20px; }
 
+.donation-presets { display: flex; gap: 10px; justify-content: center; margin-bottom: 15px; }
+.preset-btn { border: 1px solid var(--accent); background: transparent; color: var(--accent); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+.preset-btn.active, .preset-btn:hover { background: var(--accent); color: white; }
+
+.custom-amount-wrapper { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 20px; }
+.custom-amount-wrapper input { width: 120px; font-size: 16px; text-align: center; font-weight: 600; }
+
+.qr-box { margin: 20px auto 10px auto; display: none; background: #fff; padding: 15px; border-radius: 8px; width: 180px; height: 180px; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
+.qr-box img { width: 100%; height: 100%; }
+
+/* =========================================
+   Resume Layout 
+   ========================================= */
+.resume-wrapper { width: 210mm; margin: auto; background: var(--white); box-shadow: var(--shadow); min-height: 297mm; position: relative; }
+.resume { display: flex; width: 100%; height: 100%; min-height: inherit; font-size: var(--base-font-size); line-height: var(--line-height); }
 .sidebar { width: 35%; background: var(--sidebar); color: white; padding: 40px 30px; }
 .main { width: 65%; padding: 40px 35px; background: transparent; }
 
-/* =========================================
-   Profile Components
-   ========================================= */
-.photo-box {
-    width: 140px; height: 140px; margin: 0 auto 25px auto; border-radius: 50%;
-    background: #e2e8f0; overflow: hidden; border: 4px solid rgba(255,255,255,0.2);
-    cursor: pointer; position: relative;
-}
+.photo-box { width: 140px; height: 140px; margin: 0 auto 25px auto; border-radius: 50%; background: #e2e8f0; overflow: hidden; border: 4px solid rgba(255,255,255,0.2); cursor: pointer; position: relative; }
 .photo-box img { width: 100%; height: 100%; object-fit: cover; }
-.photo-overlay {
-    position: absolute; inset: 0; background: rgba(0,0,0,.5);
-    display: flex; justify-content: center; align-items: center;
-    opacity: 0; transition: .3s; color: white; font-size: 24px;
-}
+.photo-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); display: flex; justify-content: center; align-items: center; opacity: 0; transition: .3s; color: white; font-size: 24px; }
 .photo-box:hover .photo-overlay { opacity: 1; }
 
-h1 { text-align: center; font-size: 2.2em; margin-bottom: 5px; font-weight: 600; line-height: 1.2; }
-.job-title { text-align: center; font-size: 1.1em; margin-bottom: 30px; color: var(--accent); font-weight: 500; }
+h1 { text-align: center; font-size: 2.2em; margin-bottom: 5px; font-weight: 600; }
+.job-title { text-align: center; font-size: 1.1em; margin-bottom: 30px; color: var(--accent); }
 
-/* =========================================
-   Typography & Sections
-   ========================================= */
 .section { margin-bottom: 25px; position: relative; }
-.section-title {
-    font-size: 1.25em; font-weight: 600; margin-bottom: 15px; padding-bottom: 5px;
-    border-bottom: 2px solid var(--accent); text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary);
-}
+.section-title { font-size: 1.25em; font-weight: 600; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 2px solid var(--accent); text-transform: uppercase; color: var(--primary); }
 .sidebar .section-title { border-color: rgba(255,255,255,0.2); color: white; }
 
-.contact p { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95em; }
+.contact p { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
 .contact i { width: 16px; text-align: center; color: var(--accent); }
-.sidebar .contact i { color: white; opacity: 0.8; }
 
-.card {
-    background: transparent; padding: 0 0 15px 0; margin-bottom: 15px;
-    position: relative; border-radius: 0; transition: background 0.2s;
-}
-.card h3 { font-size: 1.1em; color: var(--text); font-weight: 600; margin-bottom: 2px; }
-.card p.org { font-weight: 500; color: var(--primary); margin-bottom: 2px; }
-.card small.date { display: block; font-size: 0.85em; color: #64748b; margin-bottom: 8px; font-style: italic;}
-.card ul { padding-left: 18px; margin-top: 5px; }
-.card ul li { margin-bottom: 4px; }
+.card { background: transparent; padding: 0; margin-bottom: 15px; position: relative; transition: background 0.2s; }
+.card h3 { font-size: 1.1em; font-weight: 600; }
+.card p.org { font-weight: 500; color: var(--primary); }
+.card small.date { display: block; font-size: 0.85em; color: #64748b; font-style: italic; margin-bottom: 5px; }
+.card ul { padding-left: 18px; }
 
-/* =========================================
-   Editable States & Buttons (Hidden in Print)
-   ========================================= */
-[contenteditable="true"] { outline: none; transition: 0.2s; border-radius: 4px; padding: 2px 4px; margin: -2px -4px; border: 1px dashed transparent; }
+/* Interactive Overlays */
+[contenteditable="true"] { outline: none; border-radius: 4px; padding: 2px 4px; margin: -2px -4px; border: 1px dashed transparent; }
 [contenteditable="true"]:hover, [contenteditable="true"]:focus { background: rgba(59, 130, 246, 0.08); border: 1px dashed var(--accent); }
-.sidebar [contenteditable="true"]:hover, .sidebar [contenteditable="true"]:focus { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,0.5); }
+.sidebar [contenteditable="true"]:hover, .sidebar [contenteditable="true"]:focus { background: rgba(255,255,255,.1); }
 
-.section-actions { position: absolute; right: 0; top: 0; display: flex; gap: 5px; opacity: 0; transition: 0.2s; }
+.section-actions { position: absolute; right: 0; top: 0; display: flex; gap: 5px; opacity: 0; }
 .section:hover .section-actions { opacity: 1; }
-.btn-icon { background: #e2e8f0; border: none; width: 26px; height: 26px; border-radius: 4px; cursor: pointer; color: #475569; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-.btn-icon:hover { background: var(--secondary); color: white; }
+.btn-icon { background: #e2e8f0; border: none; width: 26px; height: 26px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; }
 
-.delete-card { position: absolute; right: -10px; top: 0; background: #ef4444; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; opacity: 0; transition: 0.2s; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 10; }
-.card:hover .delete-card { opacity: 1; right: 0; }
-.card:hover { background: rgba(0,0,0,0.02); padding: 10px; margin: -10px -10px 5px -10px; border-radius: 8px;}
+.delete-card { position: absolute; right: 0; top: 0; background: #ef4444; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; opacity: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.card:hover .delete-card { opacity: 1; }
+.card:hover { background: rgba(0,0,0,0.02); padding: 10px; border-radius: 8px;}
 
-/* Skills Progress */
 .skill { margin-bottom: 12px; }
-.skill-name { font-size: 0.95em; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center;}
 .progress { height: 6px; background: rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; cursor: pointer; }
 .sidebar .progress { background: rgba(255,255,255,0.2); }
-.progress div { height: 100%; background: var(--accent); transition: width 0.3s; }
+.progress div { height: 100%; background: var(--accent); }
 
-/* Toast */
-.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 12px 25px; border-radius: 8px; font-weight: 500; display: none; z-index: 10000; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #10b981; color: white; padding: 12px 25px; border-radius: 8px; display: none; z-index: 10000; }
 
 /* =========================================
-   *** STRICT PRINT STYLES ***
+   Strict Clean Print Configuration
    ========================================= */
 @media print {
     @page { size: A4; margin: 0; }
-    
-    body { background: white !important; padding: 0 !important; color: black !important; }
-    
-    /* Completely hide UI elements */
-    .toolbar, .section-actions, .delete-card, .photo-overlay, .toast { display: none !important; }
-    
-    .resume-wrapper { width: 100% !important; max-width: 100% !important; box-shadow: none !important; margin: 0 !important; }
-    .resume { min-height: 100vh !important; }
-    
-    /* Remove all interactive styling */
+    body { background: white !important; padding: 0 !important; }
+    .toolbar, .section-actions, .delete-card, .photo-overlay, .toast, .modal-overlay { display: none !important; }
     [contenteditable="true"] { border: none !important; background: transparent !important; padding: 0 !important; margin: 0 !important; }
-    
-    /* Prevent awkward page breaks */
     .card, .skill, .section { page-break-inside: avoid; break-inside: avoid; }
-    
-    /* Reset card hovers for print */
-    .card:hover { background: transparent !important; padding: 0 0 15px 0 !important; margin: 0 0 15px 0 !important; }
-    
-    /* Ensure colors print properly */
+    .card:hover { background: transparent !important; padding: 0 !important; }
     .sidebar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .progress div { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
@@ -197,15 +164,16 @@ h1 { text-align: center; font-size: 2.2em; margin-bottom: 5px; font-weight: 600;
 </head>
 <body>
 
+<!-- Setup Control Header -->
 <div class="toolbar">
     <div class="toolbar-group">
-        <div class="toolbar-title"><i class="fa-solid fa-file-signature"></i> CV Builder</div>
-        <button class="btn outline" onclick="toggleDarkMode()" title="Toggle Dark Mode"><i class="fa-solid fa-moon"></i></button>
+        <div class="toolbar-title"><i class="fa-solid fa-file-signature"></i> CV Pro Builder</div>
+        <button class="btn outline" onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i></button>
     </div>
 
     <div class="toolbar-group">
         <div class="control-wrapper">
-            <span class="control-label">Typography</span>
+            <span class="control-label">Font Family</span>
             <select id="fontSelector" onchange="updateStyles()">
                 <option value="'Poppins', sans-serif">Poppins</option>
                 <option value="'Segoe UI', sans-serif">Segoe UI</option>
@@ -214,11 +182,11 @@ h1 { text-align: center; font-size: 2.2em; margin-bottom: 5px; font-weight: 600;
             </select>
         </div>
         <div class="control-wrapper">
-            <span class="control-label">Spacing</span>
+            <span class="control-label">Line Spacing</span>
             <input type="range" id="spacingSlider" min="1.2" max="2.0" step="0.1" value="1.6" oninput="updateStyles()" style="width: 80px;">
         </div>
         <div class="control-wrapper">
-            <span class="control-label">Theme Color</span>
+            <span class="control-label">Accent</span>
             <input type="color" id="themeColor" value="#3b82f6" onchange="updateStyles()">
         </div>
     </div>
@@ -233,232 +201,206 @@ h1 { text-align: center; font-size: 2.2em; margin-bottom: 5px; font-weight: 600;
     </div>
 
     <div class="toolbar-group">
-        <button class="btn green" onclick="saveResume()"><i class="fa-solid fa-floppy-disk"></i> Save Data</button>
-        <button class="btn blue" onclick="window.print()"><i class="fa-solid fa-print"></i> Clean Print PDF</button>
+        <button class="btn gold" onclick="toggleDonationModal(true)"><i class="fa-solid fa-heart"></i> Support Us</button>
+        <button class="btn green" onclick="saveResume()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        <button class="btn blue" onclick="window.print()"><i class="fa-solid fa-print"></i> Print PDF</button>
     </div>
 </div>
 
+<!-- Donation Widget Modal -->
+<div class="modal-overlay" id="donationOverlay">
+    <div class="modal">
+        <button class="close-modal" onclick="toggleDonationModal(false)">&times;</button>
+        <h2>Support Our Builder! 💙</h2>
+        <p>If this app helped you build a perfect clean resume, consider leaving a small donation to keep the project online.</p>
+        
+        <div class="donation-presets">
+            <button class="preset-btn active" onclick="setDonationAmount(100, this)">₹100</button>
+            <button class="preset-btn" onclick="setDonationAmount(250, this)">₹250</button>
+            <button class="preset-btn" onclick="setDonationAmount(500, this)">₹500</button>
+        </div>
+
+        <div class="custom-amount-wrapper">
+            <span>₹</span>
+            <input type="number" id="donationAmount" value="100" min="10" oninput="clearActivePresets()">
+        </div>
+
+        <button class="btn green" style="width:100%; justify-content:center;" onclick="generateDonationQR()">
+            <i class="fa-solid fa-qrcode"></i> Generate Payment QR
+        </button>
+
+        <div class="qr-box" id="qrContainer">
+            <img id="qrImage" src="" alt="Scan to Pay">
+            <p style="font-size:10px; color:#777; margin-top:5px;">Scan using BHIM, Google Pay, PhonePe or Paytm</p>
+        </div>
+    </div>
+</div>
+
+<!-- Printable Resume Document -->
 <div class="resume-wrapper">
     <div class="resume" id="resume-content">
         
+        <!-- Sidebar Column -->
         <div class="sidebar">
             <div class="photo-box" onclick="document.querySelector('input[type=file]').click()">
                 <img id="profileImage" src="https://placehold.co/300x300/1e293b/ffffff?text=Upload+Photo" alt="Profile">
                 <div class="photo-overlay"><i class="fa-solid fa-upload"></i></div>
             </div>
 
-            <h1 contenteditable="true" spellcheck="false">Pragya Mehta</h1>
-            <p class="job-title" contenteditable="true" spellcheck="false">IT Support Specialist / Web Developer</p>
+            <h1 contenteditable="true" spellcheck="false">Your Name</h1>
+            <p class="job-title" contenteditable="true" spellcheck="false">Target Job Position</p>
 
             <div class="section">
                 <div class="section-title">Contact</div>
                 <div class="contact">
                     <p><i class="fa-solid fa-phone"></i><span contenteditable="true">+91 00000 00000</span></p>
                     <p><i class="fa-solid fa-envelope"></i><span contenteditable="true">email@example.com</span></p>
-                    <p><i class="fa-solid fa-location-dot"></i><span contenteditable="true">Vadodara, Gujarat, India</span></p>
-                    <p><i class="fa-brands fa-linkedin"></i><span contenteditable="true">linkedin.com/in/yourprofile</span></p>
-                    <p><i class="fa-brands fa-github"></i><span contenteditable="true">github.com/yourusername</span></p>
+                    <p><i class="fa-solid fa-location-dot"></i><span contenteditable="true">City, State, India</span></p>
+                    <p><i class="fa-brands fa-linkedin"></i><span contenteditable="true">linkedin.com/in/username</span></p>
                 </div>
             </div>
 
             <div class="section">
-                <div class="section-title">Technical Skills</div>
-                
+                <div class="section-title">Skills</div>
                 <div class="skill">
-                    <div class="skill-name" contenteditable="true">Windows Server Administration <span style="font-size: 10px; opacity:0.6;">(Click bar to edit)</span></div>
+                    <div class="skill-name" contenteditable="true">Skill Category 1</div>
                     <div class="progress" onclick="setSkill(this)"><div style="width:85%"></div></div>
                 </div>
-                
                 <div class="skill">
-                    <div class="skill-name" contenteditable="true">Networking & Troubleshooting</div>
-                    <div class="progress" onclick="setSkill(this)"><div style="width:90%"></div></div>
+                    <div class="skill-name" contenteditable="true">Skill Category 2</div>
+                    <div class="progress" onclick="setSkill(this)"><div style="width:70%"></div></div>
                 </div>
-
-                <div class="skill">
-                    <div class="skill-name" contenteditable="true">HTML, CSS & JavaScript</div>
-                    <div class="progress" onclick="setSkill(this)"><div style="width:80%"></div></div>
-                </div>
-                
-                <div class="skill">
-                    <div class="skill-name" contenteditable="true">Hardware Configuration</div>
-                    <div class="progress" onclick="setSkill(this)"><div style="width:95%"></div></div>
-                </div>
-            </div>
-            
-            <div class="section">
-                <div class="section-title">Languages</div>
-                <ul contenteditable="true" spellcheck="false" style="padding-left: 20px; font-weight: 300;">
-                    <li>English (Fluent)</li>
-                    <li>Hindi (Native)</li>
-                    <li>Gujarati (Native)</li>
-                </ul>
             </div>
         </div>
 
+        <!-- Main Content Column -->
         <div class="main">
             <div class="section">
                 <div class="section-title">Professional Summary</div>
                 <p contenteditable="true" spellcheck="false" style="text-align: justify;">
-                    Detail-oriented IT professional currently pursuing a Bachelor of Computer Applications. Passionate about system administration, network security, and front-end web technologies. Adept at troubleshooting hardware and software issues, optimizing system performance, and developing intuitive web layouts. Seeking a dynamic remote role to leverage technical skills and drive operational excellence.
+                    Click here to write your custom professional statement. Highlight your target role, system proficiencies, coding skills, and what makes your professional journey stand out. Keep it sharp and impact-driven.
                 </p>
             </div>
 
             <div class="section" id="experienceContainer">
                 <div class="section-actions">
-                    <button class="btn-icon" onclick="addExperience()" title="Add Experience"><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn-icon" onclick="addExperience()"><i class="fa-solid fa-plus"></i></button>
                 </div>
-                <div class="section-title">Experience & Projects</div>
+                <div class="section-title">Experience</div>
                 
                 <div class="card">
-                    <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
-                    <h3 contenteditable="true" spellcheck="false">Customer Support Executive</h3>
-                    <p class="org" contenteditable="true" spellcheck="false">Maxicus | Vadodara</p>
-                    <small class="date" contenteditable="true" spellcheck="false">Recent</small>
+                    <button class="delete-card" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 contenteditable="true" spellcheck="false">Job Position</h3>
+                    <p class="org" contenteditable="true" spellcheck="false">Company Name | Location</p>
+                    <small class="date" contenteditable="true" spellcheck="false">Month Year - Present</small>
                     <ul contenteditable="true" spellcheck="false">
-                        <li>Resolved technical and customer service inquiries with a high satisfaction rate.</li>
-                        <li>Documented troubleshooting steps and managed ticketing workflows efficiently.</li>
-                    </ul>
-                </div>
-                
-                <div class="card">
-                    <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
-                    <h3 contenteditable="true" spellcheck="false">Freelance IT & Hardware Technician</h3>
-                    <p class="org" contenteditable="true" spellcheck="false">Independent Projects</p>
-                    <small class="date" contenteditable="true" spellcheck="false">2025 - Present</small>
-                    <ul contenteditable="true" spellcheck="false">
-                        <li>Diagnosed and repaired boot registry failures utilizing command-line tools and Hiren's BootCD PE.</li>
-                        <li>Configured and deployed Windows environments and automated ledger systems using HTML/CSS.</li>
+                        <li>Detail operational accomplishments, tasks, or dynamic metrics achieved here.</li>
+                        <li>Press Enter inside this list to spin off a clean bullet layout block.</li>
                     </ul>
                 </div>
             </div>
 
             <div class="section" id="educationContainer">
                 <div class="section-actions">
-                    <button class="btn-icon" onclick="addEducation()" title="Add Education"><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn-icon" onclick="addEducation()"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <div class="section-title">Education</div>
                 
                 <div class="card">
-                    <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
-                    <h3 contenteditable="true" spellcheck="false">Bachelor of Computer Applications (Distance)</h3>
-                    <p class="org" contenteditable="true" spellcheck="false">University Name</p>
-                    <small class="date" contenteditable="true" spellcheck="false">Expected Graduation: YYYY</small>
-                    <ul contenteditable="true" spellcheck="false">
-                        <li>Coursework covering Cloud Computing, Web Technology, and Ethical Hacking.</li>
-                        <li>Participated in end-semester practical examinations for advanced web frameworks.</li>
-                    </ul>
+                    <button class="delete-card" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
+                    <h3 contenteditable="true" spellcheck="false">Degree Program</h3>
+                    <p class="org" contenteditable="true" spellcheck="false">Institution / University Name</p>
+                    <small class="date" contenteditable="true" spellcheck="false">Passing Year</small>
                 </div>
-            </div>
-            
-            <div class="section">
-                <div class="section-title">Certifications & Training</div>
-                <ul contenteditable="true" spellcheck="false" style="padding-left: 20px;">
-                    <li><strong>NPTEL Certification:</strong> Cloud Computing and Ethical Hacking (Ongoing)</li>
-                    <li><strong>NPTEL Certification:</strong> Introduction to Machine Learning</li>
-                    <li>CompTIA A+ and CCNA Preparation & Study</li>
-                </ul>
             </div>
         </div>
         
     </div>
 </div>
 
-<div class="toast" id="toastBox">Action Successful</div>
+<div class="toast" id="toastBox">Saved Successfully</div>
 
 <script>
-// --- UI Styling & Core Setup ---
+// --- Styling & Mechanics ---
 function updateStyles() {
-    const font = document.getElementById('fontSelector').value;
-    const spacing = document.getElementById('spacingSlider').value;
-    const color = document.getElementById('themeColor').value;
-    
-    document.documentElement.style.setProperty('--font', font);
-    document.documentElement.style.setProperty('--line-height', spacing);
-    document.documentElement.style.setProperty('--accent', color);
+    document.documentElement.style.setProperty('--font', document.getElementById('fontSelector').value);
+    document.documentElement.style.setProperty('--line-height', document.getElementById('spacingSlider').value);
+    document.documentElement.style.setProperty('--accent', document.getElementById('themeColor').value);
 }
 
-function toggleDarkMode() {
-    document.body.classList.toggle('dark');
-}
+function toggleDarkMode() { document.body.classList.toggle('dark'); }
 
 function showToast(msg) {
-    const toast = document.getElementById('toastBox');
-    toast.innerText = msg;
-    toast.style.display = 'block';
-    setTimeout(() => { toast.style.display = 'none'; }, 2500);
+    const box = document.getElementById('toastBox');
+    box.innerText = msg; box.style.display = 'block';
+    setTimeout(() => box.style.display = 'none', 2500);
 }
 
-// --- Image Handling ---
-function loadProfilePic(event) {
-    const file = event.target.files[0];
+function loadProfilePic(e) {
+    const file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profileImage').src = e.target.result;
-            showToast("Photo Updated!");
-        };
+        reader.onload = function(ev) { document.getElementById('profileImage').src = ev.target.result; };
         reader.readAsDataURL(file);
     }
 }
 
-// --- Dynamic Block Adders ---
+// --- List Manipulator Append Blocks ---
 function addExperience() {
-    const container = document.getElementById('experienceContainer');
-    const div = document.createElement('div');
-    div.className = 'card';
-    div.innerHTML = `
-        <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
-        <h3 contenteditable="true">Job Title</h3>
-        <p class="org" contenteditable="true">Company Name | Location</p>
-        <small class="date" contenteditable="true">Month, Year - Present</small>
-        <ul contenteditable="true">
-            <li>Describe your responsibilities and impact.</li>
-            <li>Press Enter to add more bullet points.</li>
-        </ul>
-    `;
-    container.appendChild(div);
+    const card = document.createElement('div'); card.className = 'card';
+    card.innerHTML = `<button class="delete-card" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
+        <h3 contenteditable="true">Job Position</h3><p class="org" contenteditable="true">Company Name</p>
+        <small class="date" contenteditable="true">Timeline</small><ul contenteditable="true"><li>Responsibilities.</li></ul>`;
+    document.getElementById('experienceContainer').appendChild(card);
 }
 
 function addEducation() {
-    const container = document.getElementById('educationContainer');
-    const div = document.createElement('div');
-    div.className = 'card';
-    div.innerHTML = `
-        <button class="delete-card" onclick="this.parentElement.remove()" title="Delete Section"><i class="fa-solid fa-xmark"></i></button>
-        <h3 contenteditable="true">Degree / Certification</h3>
-        <p class="org" contenteditable="true">Institution Name</p>
-        <small class="date" contenteditable="true">Graduation Year</small>
-        <ul contenteditable="true">
-            <li>Additional detail or GPA (Optional).</li>
-        </ul>
-    `;
-    container.appendChild(div);
+    const card = document.createElement('div'); card.className = 'card';
+    card.innerHTML = `<button class="delete-card" onclick="this.parentElement.remove()"><i class="fa-solid fa-xmark"></i></button>
+        <h3 contenteditable="true">Degree Block</h3><p class="org" contenteditable="true">Institution</p><small class="date" contenteditable="true">Year</small>`;
+    document.getElementById('educationContainer').appendChild(card);
 }
 
-// --- Skill Bar Adjuster ---
-function setSkill(element) {
-    let val = prompt("Enter skill percentage (0-100):", "80");
-    if (val !== null && !isNaN(val) && val >= 0 && val <= 100) {
-        element.firstElementChild.style.width = val + "%";
-    }
+function setSkill(el) {
+    let target = prompt("Enter value (0-100):", "80");
+    if (target !== null && !isNaN(target) && target >= 0 && target <= 100) el.firstElementChild.style.width = target + "%";
 }
 
-// --- Local Storage Save/Load ---
-function saveResume() {
-    const content = document.getElementById('resume-content').innerHTML;
-    localStorage.setItem('savedResumeV4', content);
-    showToast("Resume Saved Locally!");
+// --- Donation Features ---
+function toggleDonationModal(show) {
+    document.getElementById('donationOverlay').style.display = show ? 'flex' : 'none';
+    if (!show) document.getElementById('qrContainer').style.display = 'none';
 }
 
-window.onload = function() {
-    const saved = localStorage.getItem('savedResumeV4');
-    if (saved) {
-        if(confirm("Found a previously saved resume. Would you like to load it?")) {
-            document.getElementById('resume-content').innerHTML = saved;
-        }
-    }
-    updateStyles(); // Initialize default styles
-};
+function setDonationAmount(amt, btn) {
+    document.getElementById('donationAmount').value = amt;
+    clearActivePresets();
+    btn.classList.add('active');
+}
+
+function clearActivePresets() {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+}
+
+function generateDonationQR() {
+    const val = document.getElementById('donationAmount').value;
+    if (!val || val < 10) { alert("Please input a donation of at least ₹10."); return; }
+    
+    // Configurable merchant parameters (Replace with your actual business UPI ID details)
+    const upiId = "mehtapragya10000@upi"; 
+    const merchantName = "Resume Builder Project";
+    
+    // Construct valid deep link UPI string
+    const upiString = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(merchantName)}&am=${val}&cu=INR`;
+    
+    // Generate secure QR rendering wrapper via standard open-source API
+    document.getElementById('qrImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiString)}`;
+    document.getElementById('qrContainer').style.display = 'block';
+}
+
+// --- Client Storage Sync ---
+function saveResume() { localStorage.setItem('resumeDataV4', document.getElementById('resume-content').innerHTML); showToast("State Saved Permanently!"); }
+window.onload = function() { const old = localStorage.getItem('resumeDataV4'); if (old && confirm("Load stored resume checkpoint?")) document.getElementById('resume-content').innerHTML = old; updateStyles(); };
 </script>
 
 </body>
