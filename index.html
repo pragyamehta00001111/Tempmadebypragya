@@ -338,6 +338,19 @@ h1 { text-align: center; font-size: 2.2em; margin-bottom: 5px; font-weight: 600;
                 </div>
             </div>
 
+            <div class="section" id="declarationContainer">
+                <div class="section-actions">
+                    <button class="btn-icon" onclick="this.parentElement.parentElement.remove()" title="Remove Declaration"><i class="fa-solid fa-trash" style="color: #ef4444;"></i></button>
+                </div>
+                <div class="section-title" contenteditable="true">Declaration</div>
+                <p contenteditable="true" spellcheck="false" style="text-align: justify; margin-bottom: 20px;">
+                    I hereby declare that the information provided above is true and correct to the best of my knowledge and belief.
+                </p>
+                <div style="margin-top: 30px;">
+                    <strong contenteditable="true" spellcheck="false">Pragya Mehta</strong>
+                </div>
+            </div>
+
         </div>
         
     </div>
@@ -409,7 +422,15 @@ function addCustomSection() {
             <p class="org" contenteditable="true">Subtext or Link</p>
             <ul contenteditable="true"><li>Describe the details here.</li></ul>
         </div>`;
-    document.getElementById('mainColumn').appendChild(section);
+    
+    // Insert new custom section before the declaration
+    const mainCol = document.getElementById('mainColumn');
+    const declaration = document.getElementById('declarationContainer');
+    if (declaration) {
+        mainCol.insertBefore(section, declaration);
+    } else {
+        mainCol.appendChild(section);
+    }
 }
 
 // Smart Skill Bar adjustment (Click to set width)
